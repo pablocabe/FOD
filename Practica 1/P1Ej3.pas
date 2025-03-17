@@ -58,7 +58,7 @@ begin
     reset (archEmpleados);
     writeln ('Ingrese el nombre o apellido del empleado a buscar');
     readln (nombre);
-    while (not eof (archEmpleados)) do begin
+    while (not EOF (archEmpleados)) do begin
         read (archEmpleados, emp);
         if (emp.nombre = nombre) or (emp.apellido = nombre) then
             writeln ('Numero: ', emp.numero, ' Apellido: ', emp.apellido, ' Nombre: ', emp.nombre, ' Edad: ', emp.edad, ' DNI: ', emp.dni);
@@ -72,7 +72,7 @@ var
     emp: empleado;
 begin
     reset (archEmpleados);
-    while (not eof (archEmpleados)) do begin
+    while (not EOF (archEmpleados)) do begin
         read (archEmpleados, emp);
         writeln ('Numero: ', emp.numero, ' Apellido: ', emp.apellido, ' Nombre: ', emp.nombre, ' Edad: ', emp.edad, ' DNI: ', emp.dni);
     end;
@@ -85,7 +85,7 @@ var
     emp: empleado;
 begin
     reset (archEmpleados);
-    while (not eof (archEmpleados)) do begin
+    while (not EOF (archEmpleados)) do begin
         read (archEmpleados, emp);
         if (emp.edad > 70) then
             writeln ('Numero: ', emp.numero, ' Apellido: ', emp.apellido, ' Nombre: ', emp.nombre, ' Edad: ', emp.edad, ' DNI: ', emp.dni);
@@ -132,14 +132,20 @@ end.
 
 {
 Realizar un programa que presente un menú con opciones para:
+
 a. Crear un archivo de registros no ordenados de empleados y completarlo con
 datos ingresados desde teclado. De cada empleado se registra: número de
 empleado, apellido, nombre, edad y DNI. Algunos empleados se ingresan con
 DNI 00. La carga finaliza cuando se ingresa el String ‘fin’ como apellido.
+
 b. Abrir el archivo anteriormente generado y
+
 i. Listar en pantalla los datos de empleados que tengan un nombre o apellido
 determinado, el cual se proporciona desde el teclado.
+
 ii. Listar en pantalla los empleados de a uno por línea.
+
 iii. Listar en pantalla los empleados mayores de 70 años, próximos a jubilarse.
+
 NOTA: El nombre del archivo a crear o utilizar debe ser proporcionado por el usuario.
 }
