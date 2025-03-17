@@ -3,7 +3,6 @@ program P1Ej2;
 type
     archivoNumeros = file of integer;
 
-
 procedure crearArchivo (var archNumeros: archivoNumeros);
 var
     num: integer;
