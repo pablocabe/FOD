@@ -4,6 +4,7 @@ type
     archivoNumeros = file of integer;
     nombreArchivo = string;
     num: integer;
+    
 var
     archNumeros: archivoNumeros;
 begin
