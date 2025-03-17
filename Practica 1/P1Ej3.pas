@@ -12,5 +12,5 @@ i. Listar en pantalla los datos de empleados que tengan un nombre o apellido
 determinado, el cual se proporciona desde el teclado.
 ii. Listar en pantalla los empleados de a uno por línea.
 iii. Listar en pantalla los empleados mayores de 70 años, próximos a jubilarse.
-
+NOTA: El nombre del archivo a crear o utilizar debe ser proporcionado por el usuario.
 }
