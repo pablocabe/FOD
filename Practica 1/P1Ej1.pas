@@ -2,11 +2,11 @@ program P1Ej1;
 
 type
     archivoNumeros = file of integer;
-    nombreArchivo = string;
-    num: integer;
 
 var
     archNumeros: archivoNumeros;
+    nombreArchivo = string;
+    num: integer;
 begin
     writeln ('Ingrese el nombre del archivo');
     readln (nombreArchivo);

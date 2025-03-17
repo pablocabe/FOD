@@ -3,20 +3,56 @@ program P1Ej2;
 type
     archivoNumeros = file of integer;
 
+procedure crearArchivo (var archNumeros: archivoNumeros);
 var
-    archNumeros: archivoNumeros;
-    nombreArchivo: string;
     num: integer;
+    nombreArchivo: string;
 begin
     writeln ('Ingrese el nombre del archivo');
     readln (nombreArchivo);
     assign (archNumeros, nombreArchivo);
-    reset (archNumeros);
-    while not eof(archNumeros) do begin
-        
+    rewrite (archNumeros);
+    writeln ('Ingrese un numero');
+    readln (num);
+    while (num <> 30000) do begin
+        write (archNumeros, num);
+        writeln ('Ingrese un numero');
+        readln (num);
     end;
-end.
+    close (archNumeros);
+end;
 
+
+procedure informarArchivo (var archNumeros: archivoNumeros);
+var
+    num: integer;
+    cantMenores1500: integer;
+    suma: integer;
+    promedio: real;
+begin
+    reset (archNumeros);
+    cantMenores1500 := 0;
+    suma := 0;
+    while (not eof (archNumeros)) do begin
+        read (archNumeros, num);
+        if (num < 1500) then
+            cantMenores1500 := cantMenores1500 + 1;
+        suma := suma + num;
+        writeln (num);
+    end;
+    promedio := suma / filesize (archNumeros);
+    writeln ('Cantidad de numeros menores a 1500: ', cantMenores1500);
+    writeln ('Promedio de los numeros ingresados: ', promedio:0:2);
+    close (archNumeros);
+end;
+
+
+var
+    archNumeros: archivoNumeros;
+begin
+    crearArchivo (archNumeros);
+    informarArchivo (archNumeros);
+end.
 
 
 {
