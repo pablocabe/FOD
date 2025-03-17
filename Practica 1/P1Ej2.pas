@@ -12,7 +12,9 @@ begin
     readln (nombreArchivo);
     assign (archNumeros, nombreArchivo);
     reset (archNumeros);
-
+    while not eof(archNumeros) do begin
+        
+    end;
 end.
 
 

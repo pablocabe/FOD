@@ -4,7 +4,7 @@ type
     archivoNumeros = file of integer;
     nombreArchivo = string;
     num: integer;
-    
+
 var
     archNumeros: archivoNumeros;
 begin
@@ -14,8 +14,7 @@ begin
     rewrite (archNumeros);
     writeln ('Ingrese un numero');
     readln (num);
-    while (num <> 30000) do
-    begin
+    while (num <> 30000) do begin
         write (archNumeros, num);
         writeln ('Ingrese un numero');
         readln (num);
