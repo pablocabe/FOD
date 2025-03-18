@@ -32,10 +32,40 @@ procedure crearArchivoDetalle(var archD: archivivoDetalle); // se dispone
 
 procedure actualizarArchivoMaestro(var archM: archivoMaestro; var archD: archivivoDetalle);
 var
+    codAlumnoMaestro:integer;
+    codAlumnoDetalle:integer;
     regM: alumno;
     regD: materia;
 begin
-
+  reset(archM);
+  reset(archD);
+  read(archM, regM);
+  read(archD, regD);
+  while (not EOF(archM)) and (not EOF(archD)) do begin
+    codAlumnoMaestro := regM.codigo;
+    codAlumnoDetalle := regD.codigo;
+    if (codAlumnoMaestro = codAlumnoDetalle) then begin
+      if (regD.aproboFinal) then begin
+        regM.cantMateriasConFinal := regM.cantMateriasConFinal + 1;
+        regM.cantMateriasAprobadas := regM.cantMateriasAprobadas - 1;
+      end;
+      if (regD.aproboCursada) then begin
+        regM.cantMateriasAprobadas := regM.cantMateriasAprobadas + 1;
+      end;
+      seek(archM, filePos(archM) - 1);
+      write(archM, regM);
+      read(archM, regM);
+      read(archD, regD);
+    end
+    else if (codAlumnoMaestro < codAlumnoDetalle) then begin
+      read(archM, regM);
+    end
+    else begin
+      read(archD, regD);
+    end;
+  end;
+  close(archM);
+  close(archD);
 end;
 
 
