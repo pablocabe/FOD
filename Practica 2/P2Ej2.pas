@@ -23,6 +23,32 @@ type
 
     archivivoDetalle = file of materia;
 
+
+procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
+
+
+procedure crearArchivoDetalle(var archD: archivivoDetalle); // se dispone
+
+
+procedure actualizarArchivoMaestro(var archM: archivoMaestro; var archD: archivivoDetalle);
+var
+    regM: alumno;
+    regD: materia;
+begin
+
+end;
+
+
+var
+    archM: archivoMaestro;
+    archD: archivivoDetalle;
+begin
+    assign (archM, 'maestro');
+    assign (archD, 'detalle');
+    crearArchivoMaestro(archM); // se dispone
+    crearArchivoDetalle(archD); // se dispone
+    actualizarArchivoMaestro(archM, archD);
+end.
 {
 Se dispone de un archivo con información de los alumnos de la Facultad de Informática. Por
 cada alumno se dispone de su código de alumno, apellido, nombre, cantidad de materias
