@@ -1,5 +1,27 @@
 program P2Ej2;
 
+const
+    valorAlto = -1;
+
+type
+
+    alumno = record
+        codigo: integer;
+        apellido: string;
+        nombre: string;
+        cantMateriasAprobadas: integer;
+        cantMateriasConFinal: integer;
+    end;
+
+    materia = record
+        codigo: integer;
+        aproboCursada: boolean;
+        aproboFinal: boolean;
+    end;
+
+    archivoMaestro = file of alumno;
+
+    archivivoDetalle = file of materia;
 
 {
 Se dispone de un archivo con información de los alumnos de la Facultad de Informática. Por
