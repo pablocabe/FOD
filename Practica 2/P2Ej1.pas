@@ -23,23 +23,30 @@ begin
     if (not EOF(archD)) then
         read (archD, regD)
     else
-        regD.codigo := valorAlto;
+        regD.codigo := valorAlto; // asigno un valor de corte
 end;
 
 
 procedure compactarArchivo(var archM: archivoMaestro; var archD: archivoDetalle);
 var
-    regM, regD: empleado;
+    regM, regD, auxiliar: empleado;
     totalComision: real;
 begin
     rewrite (archM); // creo el archivo maestro
     reset (archD); // abro el archivo detalle
-    read (archM, regM);
     leer (archD, regD);
-    while (regD.codigo <> valorAlto) do begin
-        
+    while (regD.codigo <> valorAlto) do begin // mientras no llegue al final del archivo
+        auxiliar := regD; // guardo el registro actual
+        totalComision := 0;
+        while (regD.codigo = auxiliar.codigo) do begin // mientras el codigo sea el mismo
+            totalComision := totalComision + regD.comision;
+            leer (archD, regD);
+        end;
+        regM.codigo := auxiliar.codigo;
+        regM.nombre := auxiliar.nombre;
+        regM.comision := totalComision; // guardo el total de comisiones
+        write (archM, regM);
     end;
-
     close (archM);
     close (archD);    
 end;
