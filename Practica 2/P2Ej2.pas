@@ -79,6 +79,7 @@ begin
     crearArchivoDetalle(archD); // se dispone
     actualizarArchivoMaestro(archM, archD);
 end.
+
 {
 Se dispone de un archivo con información de los alumnos de la Facultad de Informática. Por
 cada alumno se dispone de su código de alumno, apellido, nombre, cantidad de materias
