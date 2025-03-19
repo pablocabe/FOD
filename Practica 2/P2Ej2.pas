@@ -1,8 +1,5 @@
 program P2Ej2;
 
-const
-    valorAlto = -1;
-
 type
 
     alumno = record
