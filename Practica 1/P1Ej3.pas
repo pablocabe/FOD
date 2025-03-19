@@ -98,7 +98,7 @@ procedure abrirMenuPrincipal (var archEmpleados: archivoEmpleados);
 var
     opcion: integer;
 begin
-    writeln ('Menu principal de opciones');
+    writeln('Menu principal de opciones');
     writeln('Opcion 0: Salir del menu y terminar la ejecucion del programa');
     writeln('Opcion 1: Listar en pantalla los datos de empleados que tengan un nombre o apellido determinado');
     writeln('Opcion 2: Listar en pantalla los empleados de a uno por linea');

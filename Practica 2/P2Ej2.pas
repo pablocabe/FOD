@@ -68,6 +68,40 @@ begin
 end;
 
 
+procedure exportarTexto (var archM: archivoMaestro);
+var
+    regM: alumno;
+    archTexto: text;
+    nombreArchivo: string;
+begin
+    
+end;
+
+
+procedure abrirMenuPrincipal (var archM: archivoMaestro; var archD: archivoDetalle);
+var
+    opcion: integer;
+begin
+    writeln ('Menu principal de opciones');
+    writeln ('0. Salir del menu y terminar la ejecucion del programa');
+    writeln ('1. Actualizar el archivo maestro');
+    writeln ('2. Listar en un archivo de texto');
+    readln (opcion);
+    while (opcion <> 0) do begin
+        case opcion of
+            1: actualizarArchivoMaestro (archM, archD);
+            2: exportarTexto (archM);
+        else
+            writeln ('Opcion inexistente');
+        end;
+        writeln ('Menu principal de opciones');
+        writeln ('0. Salir del menu y terminar la ejecucion del programa');
+        writeln ('1. Actualizar el archivo maestro');
+        writeln ('2. Listar en un archivo de texto');
+        readln (opcion);
+    end;
+end;
+
 var
     archM: archivoMaestro;
     archD: archivivoDetalle;
@@ -76,7 +110,7 @@ begin
     assign (archD, 'detalle');
     crearArchivoMaestro(archM); // se dispone
     crearArchivoDetalle(archD); // se dispone
-    actualizarArchivoMaestro(archM, archD);
+    abrirMenuPrincipal (archM, archD);
 end.
 
 {
