@@ -29,11 +29,37 @@ procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
 procedure crearArchivoDetalle(var archD: archivoDetalle); // se dispone
 
 
+procedure leer(var archD: archivoDetalle; var regD: venta);
+begin
+    if (not EOF(archD)) then
+        read (archD, regD)
+    else
+        regD.codigo := valorInvalido; // asigno un valor de corte
+end;
+
+
 procedure actualizarArchivoMaestro (var archM: archivoMaestro; var archD: archivoDetalle);
 var
-    
+    regM: producto;
+    regD: venta;
 begin
-    
+    reset (archM);
+    reset (archD);
+    leer (archD, regD);
+    while (regD.codigo <> valorInvalido) do begin
+        read (archM, regM);
+        while (regD.codigo <> regM.codigo) do
+            read (archM, regM);
+        while (regD.codigo = regM.codigo) do begin
+            regM.stockActual := regM.stockActual - regD.ventas;
+            leer (archD, regD);
+        end;
+        seek (archM, filePos(archM)-1);
+        write (archM, regM);
+    end;
+    writeln ('Archivo maestro actualizado');
+    close(archM);
+    close(archD);
 end;
 
 
