@@ -156,5 +156,4 @@ es un reporte de salida (no se usa con fines de carga), debe informar todos los
 campos de cada alumno en una sola línea del archivo de texto.
 
 NOTA: Para la actualización del inciso a) los archivos deben ser recorridos sólo una vez.
-
 }
