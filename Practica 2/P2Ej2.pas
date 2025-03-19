@@ -1,7 +1,7 @@
 program P2Ej2;
 
 const
-    valorAlto = -1;
+    valorInvalido = -1;
 
 type
 
@@ -30,12 +30,12 @@ procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
 procedure crearArchivoDetalle(var archD: archivivoDetalle); // se dispone
 
 
-procedure leer(var archD: archivoDetalle; var regD: empleado);
+procedure leer(var archD: archivoDetalle; var regD: materia);
 begin
     if (not EOF(archD)) then
         read (archD, regD)
     else
-        regD.codigo := valorAlto; // asigno un valor de corte
+        regD.codigo := valorInvalido; // asigno un valor de corte
 end;
 
 
@@ -47,7 +47,7 @@ begin
     reset(archM);
     reset(archD);
     leer (archD, regD);
-    while (regD.codigo <> valorAlto) do begin
+    while (regD.codigo <> valorInvalido) do begin
         read (archM, regM);
         while (regD.codigo <> regM.codigo) do
             read (archM, regM);
