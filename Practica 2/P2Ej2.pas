@@ -41,7 +41,6 @@ end;
 
 procedure actualizarArchivoMaestro(var archM: archivoMaestro; var archD: archivivoDetalle);
 var
-    alumnoAuxiliar: alumno;
     regM: alumno;
     regD: materia;
 begin
@@ -49,33 +48,24 @@ begin
     reset(archD);
     leer (archD, regD);
     while (regD.codigo <> valorAlto) do begin
-        read (archM, alumnoAuxiliar);
-        while (regD.codigo <> alumnoAuxiliar.codigo) do
-            read (archM, alumnoAuxiliar);
-        while (regD.codigo = alumnoAuxiliar.codigo) do begin
-
+        read (archM, regM);
+        while (regD.codigo <> regM.codigo) do
+            read (archM, regM);
+        while (regD.codigo = regM.codigo) do begin
+            if (regD.aproboFinal) then begin
+                regM.cantMateriasConFinal := regM.cantMateriasConFinal + 1;
+                regM.cantMateriasAprobadas := regM.cantMateriasAprobadas - 1;
+            end
+            else if (regD.aproboCursada) then
+                regM.cantMateriasAprobadas := regM.cantMateriasAprobadas + 1;
+            leer (archD, regD);
         end;
+        seek (archM, filePos(archM)-1);
+        write (archM, regM);
     end;
-  
-  {while (not EOF(archM)) begin
-    codAlumnoMaestro := regM.codigo;
-    while (not EOF(archD)) and (regM.codigo = codAlumnoMaestro) do begin
-      if (regD.aproboFinal) then begin
-        regM.cantMateriasConFinal := regM.cantMateriasConFinal + 1;
-        regM.cantMateriasAprobadas := regM.cantMateriasAprobadas - 1;
-      end;
-      if (regD.aproboCursada) then begin
-        regM.cantMateriasAprobadas := regM.cantMateriasAprobadas + 1;
-      end;
-      read (archD, regD);
-    end;
-    seek(archM, filePos(archM) - 1);
-    write(archM, regM);
-    read(archM, regM);
-  end;
   close(archM);
   close(archD);
-end;}
+end;
 
 
 var
