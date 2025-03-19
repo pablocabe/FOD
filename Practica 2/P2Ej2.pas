@@ -63,6 +63,7 @@ begin
         seek (archM, filePos(archM)-1);
         write (archM, regM);
     end;
+  writeln ('Archivo maestro actualizado');
   close(archM);
   close(archD);
 end;
@@ -87,8 +88,9 @@ begin
                 writeln (archTexto, regM.codigo, ' ', regM.apellido, ' ', regM.nombre, ' ', regM.cantMateriasConFinal, ' ', regM.cantMateriasAprobadas);
             end;
         end;
+
     end;
-    writeln ('Archivo de texto exportado');
+    writeln ('Archivo exportado');
     close (archTexto);
     close (archM);
 end;
