@@ -63,6 +63,30 @@ begin
 end;
 
 
+procedure listarProductosEspecificos (var archM: archivoMaestro);
+var
+    p: producto;
+    archTexto: text;
+begin
+    reset (archM);
+    assign (archTexto, 'stock_minimo.txt');
+    rewrite (archTexto);
+    while (not EOF (archM)) do begin
+        read (archM, p);
+        if (p.stockActual < stockMinimo) then begin
+            with p do begin
+                writeln (archTexto, codigo, ' ', nombre, ' ', precio:0:2, ' ', stockActual, ' ', stockMinimo);
+            end;
+        end;
+    end;
+    close (archM);
+    close (archTexto);
+end;
+
+Listar en un archivo de texto llamado //“stock_minimo.txt” aquellos productos cuyo
+stock actual esté por debajo del stock mínimo permitido.
+
+
 procedure abrirMenuPrincipal (var archM: archivoMaestro; var archD: archivoDetalle);
 var
     opcion: integer;

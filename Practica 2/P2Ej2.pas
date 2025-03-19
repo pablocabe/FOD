@@ -85,7 +85,7 @@ begin
         if (regM.cantMateriasConFinal > regM.cantMateriasAprobadas) then begin
             with regM do begin
                 // writeln (archTexto, 'Codigo=', codigo,' Apellido=', apellido ,'Nombre=', nombre, 'MateriasConFinal=', cantMateriasConFinal, ' MateriasSinFinal=', cantMateriasAprobadas);
-                writeln (archTexto, regM.codigo, ' ', regM.apellido, ' ', regM.nombre, ' ', regM.cantMateriasConFinal, ' ', regM.cantMateriasAprobadas);
+                writeln (archTexto, codigo, ' ', apellido, ' ', nombre, ' ', cantMateriasConFinal, ' ', cantMateriasAprobadas);
             end;
         end;
 
