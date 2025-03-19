@@ -22,6 +22,59 @@ type
 
     archivoDetalle = file of venta; // es el archivo donde figuran las ventas diarias
 
+
+procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
+
+
+procedure crearArchivoDetalle(var archD: archivoDetalle); // se dispone
+
+
+procedure actualizarArchivoMaestro (var archM: archivoMaestro; var archD: archivoDetalle);
+var
+    
+begin
+    
+end;
+
+
+procedure abrirMenuPrincipal (var archM: archivoMaestro; var archD: archivoDetalle);
+var
+    opcion: integer;
+begin
+    writeln ('Menu principal de opciones');
+    writeln ('0. Salir del menu y terminar la ejecucion del programa');
+    writeln ('1. Crear archivo maestro');
+    writeln ('2. Crear archivo detalle');
+    writeln ('3. Actualizar el archivo maestro');
+    writeln ('4. Listar productos especificos en un archivo de texto');
+    readln (opcion);
+    while (opcion <> 0) do begin
+        case opcion of
+            1: crearArchivoMaestro(archM); // se dispone
+            2: crearArchivoDetalle(archD); // se dispone
+            3: actualizarArchivoMaestro (archM, archD);
+            4: listarProductosEspecificos (archM);
+        else
+            writeln ('Opcion inexistente');
+        end;
+        writeln ('Menu principal de opciones');
+        writeln ('0. Salir del menu y terminar la ejecucion del programa');
+        writeln ('1. Actualizar el archivo maestro');
+        writeln ('2. Listar en un archivo de texto');
+        readln (opcion);
+    end;
+end;
+
+
+var
+    archM: archivoMaestro;
+    archD: archivoDetalle;
+begin
+    assign (archM, 'maestro');
+    assign (archD, 'detalle');
+    abrirMenuPrincipal (archM, archD);
+end.
+
 {
 El encargado de ventas de un negocio de productos de limpieza desea administrar el stock
 de los productos que vende.
