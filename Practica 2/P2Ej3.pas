@@ -51,7 +51,7 @@ begin
         while (regD.codigo <> regM.codigo) do
             read (archM, regM);
         while (regD.codigo = regM.codigo) do begin
-            regM.stockActual := regM.stockActual - regD.ventas;
+            regM.stockActual := regM.stockActual - regD.cantVentas;
             leer (archD, regD);
         end;
         seek (archM, filePos(archM)-1);
@@ -73,7 +73,7 @@ begin
     rewrite (archTexto);
     while (not EOF (archM)) do begin
         read (archM, p);
-        if (p.stockActual < stockMinimo) then begin
+        if (p.stockActual < p.stockMinimo) then begin
             with p do begin
                 writeln (archTexto, codigo, ' ', nombre, ' ', precio:0:2, ' ', stockActual, ' ', stockMinimo);
             end;
@@ -107,10 +107,11 @@ begin
         else
             writeln ('Opcion inexistente');
         end;
-        writeln ('Menu principal de opciones');
         writeln ('0. Salir del menu y terminar la ejecucion del programa');
-        writeln ('1. Actualizar el archivo maestro');
-        writeln ('2. Listar en un archivo de texto');
+        writeln ('1. Crear archivo maestro');
+        writeln ('2. Crear archivo detalle');
+        writeln ('3. Actualizar el archivo maestro');
+        writeln ('4. Listar productos especificos en un archivo de texto');
         readln (opcion);
     end;
 end;
