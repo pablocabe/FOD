@@ -1,5 +1,8 @@
 program P2Ej2;
 
+const
+    valorAlto = -1;
+
 type
 
     alumno = record
@@ -27,17 +30,34 @@ procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
 procedure crearArchivoDetalle(var archD: archivivoDetalle); // se dispone
 
 
+procedure leer(var archD: archivoDetalle; var regD: empleado);
+begin
+    if (not EOF(archD)) then
+        read (archD, regD)
+    else
+        regD.codigo := valorAlto; // asigno un valor de corte
+end;
+
+
 procedure actualizarArchivoMaestro(var archM: archivoMaestro; var archD: archivivoDetalle);
 var
-    codAlumnoMaestro:integer;
+    alumnoAuxiliar: alumno;
     regM: alumno;
     regD: materia;
 begin
-  reset(archM);
-  reset(archD);
-  read(archM, regM);
-  read(archD, regD);
-  while (not EOF(archM)) begin
+    reset(archM);
+    reset(archD);
+    leer (archD, regD);
+    while (regD.codigo <> valorAlto) do begin
+        read (archM, alumnoAuxiliar);
+        while (regD.codigo <> alumnoAuxiliar.codigo) do
+            read (archM, alumnoAuxiliar);
+        while (regD.codigo = alumnoAuxiliar.codigo) do begin
+
+        end;
+    end;
+  
+  {while (not EOF(archM)) begin
     codAlumnoMaestro := regM.codigo;
     while (not EOF(archD)) and (regM.codigo = codAlumnoMaestro) do begin
       if (regD.aproboFinal) then begin
@@ -55,7 +75,7 @@ begin
   end;
   close(archM);
   close(archD);
-end;
+end;}
 
 
 var
