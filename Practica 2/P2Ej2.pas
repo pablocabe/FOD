@@ -21,13 +21,13 @@ type
 
     archivoMaestro = file of alumno;
 
-    archivivoDetalle = file of materia;
+    archivoDetalle = file of materia;
 
 
 procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
 
 
-procedure crearArchivoDetalle(var archD: archivivoDetalle); // se dispone
+procedure crearArchivoDetalle(var archD: archivoDetalle); // se dispone
 
 
 procedure leer(var archD: archivoDetalle; var regD: materia);
@@ -39,7 +39,7 @@ begin
 end;
 
 
-procedure actualizarArchivoMaestro(var archM: archivoMaestro; var archD: archivivoDetalle);
+procedure actualizarArchivoMaestro(var archM: archivoMaestro; var archD: archivoDetalle);
 var
     regM: alumno;
     regD: materia;
@@ -74,7 +74,23 @@ var
     archTexto: text;
     nombreArchivo: string;
 begin
-    
+    writeln ('Ingrese el nombre del archivo de texto');
+    readln (nombreArchivo);
+    assign (archTexto, nombreArchivo);
+    rewrite (archTexto);
+    reset (archM);
+    while (not EOF (archM)) do begin
+        read (archM, regM);
+        if (regM.cantMateriasConFinal > regM.cantMateriasAprobadas) then begin
+            with regM do begin
+                // writeln (archTexto, 'Codigo=', codigo,' Apellido=', apellido ,'Nombre=', nombre, 'MateriasConFinal=', cantMateriasConFinal, ' MateriasSinFinal=', cantMateriasAprobadas);
+                writeln (archTexto, regM.codigo, ' ', regM.apellido, ' ', regM.nombre, ' ', regM.cantMateriasConFinal, ' ', regM.cantMateriasAprobadas);
+            end;
+        end;
+    end;
+    writeln ('Archivo de texto exportado');
+    close (archTexto);
+    close (archM);
 end;
 
 
@@ -104,7 +120,7 @@ end;
 
 var
     archM: archivoMaestro;
-    archD: archivivoDetalle;
+    archD: archivoDetalle;
 begin
     assign (archM, 'maestro');
     assign (archD, 'detalle');
