@@ -83,9 +83,6 @@ begin
     close (archTexto);
 end;
 
-Listar en un archivo de texto llamado //“stock_minimo.txt” aquellos productos cuyo
-stock actual esté por debajo del stock mínimo permitido.
-
 
 procedure abrirMenuPrincipal (var archM: archivoMaestro; var archD: archivoDetalle);
 var
