@@ -1,6 +1,11 @@
 program P2Ej6;
 
+type
 
+    registroDetalle = record
+        cod_usuario: integer;
+        
+    end;
 {
 Suponga que trabaja en una oficina donde está montada una LAN (red local).
 
