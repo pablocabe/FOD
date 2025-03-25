@@ -11,7 +11,31 @@ type
         precio: real;
     end;
 
+    actualizacionProducto = record
+        codigo: integer;
+        cantVentas: integer
+    end;
+
     archivoMaestro = file of producto;
+
+    archivoDetalle = file of actualizacionProducto;
+
+
+procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
+
+
+procedure crearArchivoDetalle(var archD: archivoDetalle); // se dispone
+
+
+var
+    archM: archivoMaestro;
+    archD archivoDetalle;
+begin
+    assign (archM, 'maestro');
+    assign (archD, 'detalle');
+    crearArchivoMaestro(archM); // se dispone
+    crearArchivoDetalle(archD); // se dispone
+end.
 
 {
 Se cuenta con un archivo de productos de una cadena de venta de alimentos congelados.
