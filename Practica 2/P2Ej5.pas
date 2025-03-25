@@ -5,8 +5,9 @@ const
     valorInvalido = -1;
 
 type
+    subrango = 1 .. dF;
 
-    producto = record
+    registroMaestro = record
         codigo: integer;
         nombre: string;
         descripción: string;
@@ -15,39 +16,79 @@ type
         precio: real;
     end;
 
-    actualizacionProducto = record
+    registroDetalle = record
         codigo: integer;
         cantVentas: integer
     end;
 
-    archivoMaestro = file of producto;
+    archivoMaestro = file of registroMaestro;
 
-    archivoDetalle = file of actualizacionProducto;
+    archivoDetalle = file of registroDetalle;
 
+    vectorDetalles = array [subrango] of archivoDetalle;
 
-procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
-
-
-procedure crearArchivoDetalle(var archD: archivoDetalle); // se dispone
+    vectorRegistros = array [subrango] of registroDetalle; // no entiendo para qué es necesario
 
 
-procedure crearArchivosDetalles(var vector: vectorDetalles);
+procedure crearArchivoMaestro (var archM: archivoMaestro); // se dispone
+
+
+procedure crearArchivoDetalle (var archD: archivoDetalle); // se dispone
+
+
+procedure crearArchivosDetalles (var vectorD: vectorDetalles);
 var
-    i: integer;
+    i: subrango;
 begin
     for i := 1 to dF do
-        crearArchivoDetalle(vector[i]); // se dispone
+        crearArchivoDetalle(vectorD[i]); // se dispone
 end;
 
+
+procedure leer (var archD: archivoDetalle; var regD: registroDetalle);
+begin
+    if (not EOF(archD)) then
+        read (archD, regD)
+    else
+        regD.codigo := valorInvalido; // asigno un valor de corte
+end;
+
+
+procedure buscarMinimo (var vectorD: vectorDetalles; var vectorR: vectorRegistros; var minimo: registroDetalle);
+begin
+    
+end;
+
+
+procedure actualizarArchivoMaestro (var archM: archivoMaestro; var vectorD: vectorDetalles);
+var
+    i: subrango;
+    producto: registroMaestro;
+    minimo: registroDetalle;
+    vectorR: vectorRegistros;
+begin
+    reset (archM);
+    for i := 1 to dF do begin
+        reset (vectorD[i]);
+        leer (vectorD[i], vectorR[i]);
+    end;
+    buscarMinimo (vectorD, vectorR, minimo);
+
+    close (archM);
+    for i := 1 to dF do begin
+        close (vectorD[i]);
+    end;
+end;
 
 
 var
     archM: archivoMaestro;
-    vector: vectorDetalles;
+    vectorD: vectorDetalles;
 begin
     assign (archM, 'maestro');
     crearArchivoMaestro(archM); // se dispone
-    crearArchivosDetalles(vector); // se dispone
+    crearArchivosDetalles(vectorD); // se dispone
+    actualizarArchivoMaestro(archM, vectorD);
 end.
 
 {

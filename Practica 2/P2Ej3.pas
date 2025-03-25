@@ -1,7 +1,7 @@
 program P2Ej3;
 
 const
-    valorInvalido = -1;
+    valorInvalido = 9999;
 
 type
 

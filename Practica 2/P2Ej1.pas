@@ -1,7 +1,7 @@
 program P2Ej1;
 
 const
-    valorAlto = -1;
+    valorAlto = 9999;
 
 type
     empleado = record
