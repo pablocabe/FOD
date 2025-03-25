@@ -1,6 +1,17 @@
 program P2Ej5;
 
+type
 
+    producto = record
+        codigo: integer;
+        nombre: string;
+        descripción: string;
+        stockDisponible: integer;
+        stockMinimo: integer;
+        precio: real;
+    end;
+
+    archivoMaestro = file of producto;
 
 {
 Se cuenta con un archivo de productos de una cadena de venta de alimentos congelados.
