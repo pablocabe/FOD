@@ -6,6 +6,7 @@ type
         cod_usuario: integer;
         
     end;
+    
 {
 Suponga que trabaja en una oficina donde está montada una LAN (red local).
 
