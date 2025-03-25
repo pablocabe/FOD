@@ -2,7 +2,7 @@ program P2Ej5;
 
 const
     dF = 30;
-    valorInvalido = -1;
+    valorInvalido = 9999;
 
 type
     subrango = 1 .. dF;
