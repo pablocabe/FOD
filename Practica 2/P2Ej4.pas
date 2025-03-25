@@ -1,5 +1,72 @@
 program P2Ej4;
 
+const
+    valoralto = 'ZZZ';
+
+type
+    registroMaestro = record
+        provincia: string;
+        cantAlfabetizados: integer;
+        cantEncuestados: integer;
+    end;
+
+    registroDetalle = record
+        provincia: string;
+        codigo: integer;
+        cantAlfabetizados: integer;
+        cantEncuestados: integer;
+    end;
+
+    archivoMaestro = file of registroMaestro;
+
+    archivoDetalle = file of registroDetalle;
+
+
+procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
+
+
+procedure crearArchivoDetalle(var archD: archivoDetalle); // se dispone
+
+
+procedure leer(var archD: archivoDetalle; var regD: registroDetalle);
+begin
+    if (not EOF(archD)) then
+        read (archD, regD)
+    else
+        regD.provincia := valorInvalido; // asigno un valor de corte
+end;
+
+
+procedure actualizarArchivoMaestro (var archM: archivoMaestro; var archD1, archD2: archivoDetalle);
+var
+    regM: registroMaestro;
+    regD1, regD2: registroDetalle;
+begin
+    reset (archM);
+    reset (archD1);
+    reset (archD2);
+    leer (archD1, regD1);
+    leer (archD2, regD2);
+    
+    close (archM);
+    close (archD1);
+    close (archD2);
+end;
+
+
+var
+    archM: archivoMaestro;
+    archD1, archD2: archivoDetalle;
+begin
+    assign (archM, 'maestro');
+    assign (archD1, 'detalle1');
+    assign (archD2, 'detalle2');
+    crearArchivoMaestro(archM); // se dispone
+    crearArchivoDetalle(archD1); // se dispone
+    crearArchivoDetalle(archD2); // se dispone
+    actualizarArchivoMaestro (archM, archD1, archD2);
+end.
+
 
 {
 A partir de información sobre la alfabetización en la Argentina, se necesita actualizar un
