@@ -96,7 +96,7 @@ Se cuenta con un archivo de productos de una cadena de venta de alimentos congel
 De cada producto se almacena: código del producto, nombre, descripción, stock disponible,
 stock mínimo y precio del producto.
 
-Se recibe diariamente un archivo detalle de cada una de las 30 sucursales de la cadena. Se
+Se recibe diariamente un archivo detalle de cada una de las 30 sucursales de la cadena.
 debe realizar el procedimiento que recibe los 30 detalles y actualiza el stock del archivo
 maestro. La información que se recibe en los detalles es: código de producto y cantidad
 vendida.
