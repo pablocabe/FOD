@@ -1,5 +1,9 @@
 program P2Ej5;
 
+const
+    dF = 30;
+    valorInvalido = -1;
+
 type
 
     producto = record
@@ -27,14 +31,23 @@ procedure crearArchivoMaestro(var archM: archivoMaestro); // se dispone
 procedure crearArchivoDetalle(var archD: archivoDetalle); // se dispone
 
 
+procedure crearArchivosDetalles(var vector: vectorDetalles);
+var
+    i: integer;
+begin
+    for i := 1 to dF do
+        crearArchivoDetalle(vector[i]); // se dispone
+end;
+
+
+
 var
     archM: archivoMaestro;
-    archD archivoDetalle;
+    vector: vectorDetalles;
 begin
     assign (archM, 'maestro');
-    assign (archD, 'detalle');
     crearArchivoMaestro(archM); // se dispone
-    crearArchivoDetalle(archD); // se dispone
+    crearArchivosDetalles(vector); // se dispone
 end.
 
 {
