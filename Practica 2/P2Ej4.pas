@@ -1,7 +1,7 @@
 program P2Ej4;
 
 const
-    valoralto = 'ZZZ';
+    valorInvalido = 'ZZZ';
 
 type
     registroMaestro = record
@@ -37,17 +37,42 @@ begin
 end;
 
 
+procedure buscarMinimo (var archD1, archD2: archivoDetalle; var regD1, regD2, minimo: registroDetalle);
+begin
+    if (regD1.nombre <= regD2.nombre) then begin
+        minimo := regD1;
+        leer (archD1, regD1);
+    end
+    else begin
+        minimo := regD2;
+        leer (archD2, regD2);
+    end;
+end;
+
+
 procedure actualizarArchivoMaestro (var archM: archivoMaestro; var archD1, archD2: archivoDetalle);
 var
     regM: registroMaestro;
-    regD1, regD2: registroDetalle;
+    regD1, regD2, minimo: registroDetalle;
 begin
     reset (archM);
     reset (archD1);
     reset (archD2);
     leer (archD1, regD1);
     leer (archD2, regD2);
-    
+    buscarMinimo (archD1, archD2, regD1, regD2, minimo);
+    while (minimo.provincia <> valorInvalido) do begin
+        read (regM, archM);
+        while (regM.provincia <> minimo.provincia) do
+            read (regM, archM);
+        while (regM.provincia = minimo.provincia) do begin
+            regM.cantAlfabetizados := regM.cantAlfabetizados + minimo.cantAlfabetizados;
+            regM.cantEncuestados := regM.cantEncuestados + minimo.cantEncuestados;
+            buscarMinimo (archD1, archD2, regD1, regD2, minimo); 
+        end;
+        seek (archM, filePos (archM)-1);
+        write (archM, regM);
+    end;
     close (archM);
     close (archD1);
     close (archD2);
