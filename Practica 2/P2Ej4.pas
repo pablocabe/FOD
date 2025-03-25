@@ -39,7 +39,7 @@ end;
 
 procedure buscarMinimo (var archD1, archD2: archivoDetalle; var regD1, regD2, minimo: registroDetalle);
 begin
-    if (regD1.nombre <= regD2.nombre) then begin
+    if (regD1.provincia <= regD2.provincia) then begin
         minimo := regD1;
         leer (archD1, regD1);
     end
@@ -58,11 +58,13 @@ begin
     reset (archM);
     reset (archD1);
     reset (archD2);
+
     leer (archD1, regD1);
     leer (archD2, regD2);
     buscarMinimo (archD1, archD2, regD1, regD2, minimo);
+
     while (minimo.provincia <> valorInvalido) do begin
-        read (regM, archM);
+        read (archM, regM);
         while (regM.provincia <> minimo.provincia) do
             read (regM, archM);
         while (regM.provincia = minimo.provincia) do begin
@@ -73,6 +75,7 @@ begin
         seek (archM, filePos (archM)-1);
         write (archM, regM);
     end;
+
     close (archM);
     close (archD1);
     close (archD2);
