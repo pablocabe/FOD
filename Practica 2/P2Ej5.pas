@@ -70,10 +70,38 @@ begin
 end;
 
 {
-A	6	8	12
-B	2	3	5
-C	1	7	9
+A	6	8	12  EOF
+B	2	3	5   EOF
+C	1	7	9   EOF
+
+vR
+6
+2
+1
 }
+
+
+procedure informarArchivoTexto (var archM: archivoMaestro);
+var
+    archivoTexto: text;
+    regM: registroMaestro;
+var
+    archivoTexto: text;
+begin
+    assign (archivoTexto, 'productos.txt');
+    rewrite (archivoTexto);
+    reset (archM);
+    while (archM <> EOF) do begin
+        read (archM, regM);
+        if (regM.stockDisponible < regM.stockMinimo) then begin // está bien exportado?
+            writeln (archivoTexto, 'Nombre: ', regM.nombre);
+            writeln (archivoTexto, 'Descripción: ', regM.descripción);
+            writeln (archivoTexto, 'Stock disponible: ', regM.stockDisponible);
+            writeln (archivoTexto, 'Precio: ', regM.precio);
+        end;
+    end;
+    close (archivoTexto);
+end;
 
 
 procedure actualizarArchivoMaestro (var archM: archivoMaestro; var vectorD: vectorDetalles);
@@ -107,6 +135,7 @@ begin
         write (archM, regM); // escribo el registro modificado
     end;
 
+    informarArchivoTexto (archM); // informo en el archivo de texto
     close (archM);
     for i := 1 to dF do begin
         close (vectorD[i]);
@@ -133,6 +162,12 @@ Se recibe diariamente un archivo detalle de cada una de las 30 sucursales de la 
 Debe realizar el procedimiento que recibe los 30 detalles y actualiza el stock del archivo
 maestro. La información que se recibe en los detalles es: código de producto y cantidad
 vendida.
+
+Además, se deberá informar en un archivo de texto: nombre de producto,
+descripción, stock disponible y precio de aquellos productos que tengan stock disponible por
+debajo del stock mínimo. Pensar alternativas sobre realizar el informe en el mismo
+procedimiento de actualización, o realizarlo en un procedimiento separado (analizar
+ventajas/desventajas en cada caso).
 
 Nota: todos los archivos se encuentran ordenados por código de productos. En cada detalle
 puede venir 0 o N registros de un determinado producto.
