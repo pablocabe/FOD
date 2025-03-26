@@ -44,7 +44,7 @@ begin
         crearArchivoDetalle(vectorD[i]); // se dispone
 end;
 
-
+// leer (vectorD[i], vectorR[i]);
 procedure leer (var archD: archivoDetalle; var regD: registroDetalle);
 begin
     if (not EOF(archD)) then
@@ -59,7 +59,7 @@ var
     i, pos: subrango;
 begin
     minimo.codigo := valorInvalido; // asigno un valor de corte
-    for i := 1 to dF do begin // recorro los 30 detalles
+    for i := 1 to dF do begin // recorro los 30 primeros registros de los detalles
         if (vectorR[i] < minimo.codigo) then begin // si el código del detalle es menor al mínimo
             minimo := vectorR[i]; // asigno el detalle como mínimo
             pos := i; // guardo la posición del mínimo
@@ -68,6 +68,12 @@ begin
     if (minimo.codigo <> valorInvalido) then // si encontré un mínimo
         leer (vectorD[pos], vectorR[pos]); // leo el siguiente registro del detalle
 end;
+
+{
+A	6	8	12
+B	2	3	5
+C	1	7	9
+}
 
 
 procedure actualizarArchivoMaestro (var archM: archivoMaestro; var vectorD: vectorDetalles);
@@ -114,7 +120,7 @@ var
 begin
     assign (archM, 'maestro');
     crearArchivoMaestro(archM); // se dispone
-    crearArchivosDetalles(vectorD); // se dispone
+    crearArchivosDetalles(vectorD);
     actualizarArchivoMaestro(archM, vectorD);
 end.
 
