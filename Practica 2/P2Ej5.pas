@@ -100,6 +100,7 @@ begin
             writeln (archivoTexto, 'Precio: ', regM.precio);
         end;
     end;
+    close (archM); // por qué este close no va?
     close (archivoTexto);
 end;
 
