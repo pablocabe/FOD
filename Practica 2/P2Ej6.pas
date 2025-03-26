@@ -1,11 +1,35 @@
 program P2Ej6;
 
+const
+    valorAlto = 9999;
+    dF = 5;
+
 type
+    subrango = 1..dF;
+    
+    registroMaestro = record
+        cod_usuario: integer;
+        fecha: integer;
+        tiempo_total_de_sesiones_abiertas: integer;
+    end;
 
     registroDetalle = record
         cod_usuario: integer;
-        
+        fecha: integer;
+        tiempo_sesion: integer;
     end;
+
+    archivoMaestro = file of registroMaestro;
+
+    archivoDetalle = file of registroDetalle;
+
+    vector 
+
+var
+
+begin
+    
+end.
     
 {
 Suponga que trabaja en una oficina donde está montada una LAN (red local).
