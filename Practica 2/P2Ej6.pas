@@ -9,14 +9,14 @@ type
     
     registroMaestro = record
         cod_usuario: integer;
-        fecha: integer;
-        tiempo_total_de_sesiones_abiertas: integer;
+        fecha: string;
+        tiempo_total_de_sesiones_abiertas: real;
     end;
 
     registroDetalle = record
         cod_usuario: integer;
-        fecha: integer;
-        tiempo_sesion: integer;
+        fecha: string;
+        tiempo_sesion: real;
     end;
 
     archivoMaestro = file of registroMaestro;
@@ -54,14 +54,30 @@ procedure crearArchivoMaestro (var archM: archivoMaestro; var vectorD: vectorDet
 var
     i: subrango;
     vectorR: vectorRegistros;
+    regM: registroMaestro;
+    minimo: registroDetalle;
+    cantHorasTotales: real;
 begin
+    assign (archM, 'maestro');
     rewrite (archM);
     for i := 1 to dF do begin
         reset (vectorD[i]);
         leer (vectorD[i], vectorR[i]);
     end;
 
-
+    buscarCodigoMinimo (vectorD, vectorR, minimo);
+    while (minimo.cod_usuario <> valorAlto) do begin
+        regM.cod_usuario := minimo.cod_usuario;
+        while (regM.cod_usuario = minimo.cod_usuario) do begin
+            regM.fecha := minimo.fecha;
+            regM.tiempo_total_de_sesiones_abiertas := 0;
+            while (regM.cod_usuario = minimo.cod_usuario) and (regM.fecha = minimo.fecha) do begin
+                regM.tiempo_total_de_sesiones_abiertas := regM.tiempo_total_de_sesiones_abiertas + minimo.tiempo_sesion;
+                buscarCodigoMinimo (vectorD, vectorR, minimo);
+            end;
+            write (archM, regM);
+        end;
+    end;
 
     close (archM);
     for i := 1 to dF do begin
@@ -75,7 +91,6 @@ var
     vectorD: vectorDetalles;
 begin
     crearArchivosDetalles (vectorD);
-    assign (archM, 'maestro');
     crearArchivoMaestro (archM, vectorD);
 end.
     
