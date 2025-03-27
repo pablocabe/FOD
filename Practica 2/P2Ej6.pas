@@ -36,7 +36,7 @@ var
     i: subrango;
 begin
     for i := 1 to dF do begin
-        crearArchivoDetalle(vectorD[i]);
+        crearArchivoDetalle(vectorD[i]); // se dispone
     end;
 end;
 
@@ -58,7 +58,7 @@ begin
     minimo.fecha := 'ZZZ';
     for i := 1 to dF do begin
         if (vectorR[i].cod_usuario < minimo.cod_usuario) or 
-        ((vectorR[i].cod_usuario = minimo.cod_usuario) and (vector[i].fecha < minimo.fecha)) then begin
+        ((vectorR[i].cod_usuario = minimo.cod_usuario) and (vectorR[i].fecha < minimo.fecha)) then begin
             minimo := vectorR[i];
             pos := i;
         end;
@@ -71,12 +71,11 @@ end;
 procedure crearArchivoMaestro (var archM: archivoMaestro; var vectorD: vectorDetalles);
 var
     i: subrango;
-    vectorR: vectorRegistros;
     regM: registroMaestro;
     minimo: registroDetalle;
-    cantHorasTotales: real;
+    vectorR: vectorRegistros;
 begin
-    assign (archM, 'maestro');
+    assign (archM, '/var/log/maestro');
     rewrite (archM);
     for i := 1 to dF do begin
         reset (vectorD[i]);
