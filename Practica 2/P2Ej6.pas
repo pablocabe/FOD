@@ -23,12 +23,60 @@ type
 
     archivoDetalle = file of registroDetalle;
 
-    vector 
+    vectorDetalles = array [subrango] of archivoDetalle;
+
+    vectorRegistros = array [subrango] of registroDetalle;
+
+
+procedure crearArchivoDetalle (var archD: archivoDetalle) // se dispone
+
+
+procedure crearArchivosDetalles (var vectorD: vectorDetalles);
+var
+    i: subrango;
+begin
+    for i := 1 to dF do begin
+        crearArchivoDetalle(vectorD[i]);
+    end;
+end;
+
+
+procedure leer (var archD: archivoDetalle; var regD: registroDetalle);
+begin
+    if (not EOF (archD)) then
+        read (archD, regD)
+    else
+        regD.cod_usuario := valorAlto;
+end;
+
+
+procedure crearArchivoMaestro (var archM: archivoMaestro; var vectorD: vectorDetalles);
+var
+    i: subrango;
+    vectorR: vectorRegistros;
+begin
+    rewrite (archM);
+    for i := 1 to dF do begin
+        reset (vectorD[i]);
+        leer (vectorD[i], vectorR[i]);
+    end;
+
+
+
+    close (archM);
+    for i := 1 to dF do begin
+        close (vectorD[i]);
+    end;
+end;
+
 
 var
-
+    archM: archivoMaestro;
+    vectorD: vectorDetalles;
 begin
-    
+    crearArchivosDetalles (vectorD);
+    assign (archM, 'maestro');
+    crearArchivoMaestro (archM, vectorD);
 end.
     
 {
