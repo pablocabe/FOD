@@ -60,7 +60,7 @@ var
 begin
     minimo.codigo := valorInvalido; // asigno un valor de corte
     for i := 1 to dF do begin // recorro los 30 primeros registros de los detalles
-        if (vectorR[i] < minimo.codigo) then begin // si el código del detalle es menor al mínimo
+        if (vectorR[i].codigo < minimo.codigo) then begin // si el código del detalle es menor al mínimo
             minimo := vectorR[i]; // asigno el detalle como mínimo
             pos := i; // guardo la posición del mínimo
         end;

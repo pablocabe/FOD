@@ -50,6 +50,24 @@ begin
 end;
 
 
+procedure buscarCodigoMinimo (var vectorD: vectorDetalles; var vectorR: vectorRegistros; var minimo: registroDetalle);
+var
+    i, pos: subrango;
+begin
+    minimo.cod_usuario := valorAlto;
+    minimo.fecha := 'ZZZ';
+    for i := 1 to dF do begin
+        if (vectorR[i].cod_usuario < minimo.cod_usuario) or 
+        ((vectorR[i].cod_usuario = minimo.cod_usuario) and (vector[i].fecha < minimo.fecha)) then begin
+            minimo := vectorR[i];
+            pos := i;
+        end;
+    end;
+    if (minimo.cod_usuario <> valorAlto) then
+        leer (vectorD[pos], vectorR[pos]);
+end;
+
+
 procedure crearArchivoMaestro (var archM: archivoMaestro; var vectorD: vectorDetalles);
 var
     i: subrango;
