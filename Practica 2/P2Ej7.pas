@@ -1,4 +1,4 @@
-program P2Ej7v1;
+program P2Ej7;
 
 const
     dF = 10;
