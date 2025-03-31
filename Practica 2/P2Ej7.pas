@@ -79,6 +79,7 @@ begin
 end;
 
 
+// No cumple esta parte: las localidades pueden o no haber sido actualizadas
 procedure actualizarArchivoMaestro (var archM: archivoMaestro; var vectorD: vectorDetalles);
 var
     i: subrango;
