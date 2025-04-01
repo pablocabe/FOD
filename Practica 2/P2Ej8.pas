@@ -32,16 +32,15 @@ begin
         read (archM, regM);
         codigoActual := regM.cliente.codigo;
         writeln ('El cliente es ', regM.cliente.nombre , ' ', regM.cliente.apellido, '. Su codigo es: ', regM.cliente.codigo);
-
         while (regM.cliente.codigo = codigoActual) do begin
             anioActual := regM.cliente.anio;
             totalAnual := 0;
-            while (regM.cliente.codigo = codigoActual) and (anioActual = regM.cliente.anio) do begin
+            while (regM.cliente.codigo = codigoActual) and (regM.cliente.anio = anioActual) do begin
                 mesActual := regM.cliente.mes;
                 totalMensual := 0;
                 cantVentas := 0;
-                while (regM.cliente.codigo = codigoActual) and (anioActual = regM.cliente.anio)
-                and (mesActual = regM.cliente.mes) do begin
+                while (regM.cliente.codigo = codigoActual) and (regM.cliente.anio = regM.cliente.anio)
+                and (mregM.cliente.mes = mesActual) do begin
                     totalEmpresa := totalEmpresa + regM.monto;
                     totalMensual := totalMensual + regM.monto;
                     cantVentas := cantVentas + 1;
