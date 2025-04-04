@@ -1,4 +1,4 @@
-program P2Ej6;
+program P2Ej5;
 
 const
     valorAlto = 9999;

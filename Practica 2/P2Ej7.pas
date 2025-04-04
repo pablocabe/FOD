@@ -1,4 +1,4 @@
-program P2Ej2;
+program P2Ej7;
 
 const
     valorInvalido = 9999;
