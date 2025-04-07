@@ -43,6 +43,8 @@ begin
     end;
 end;
 
+// La constante valorAlto = 9999 se usa como un valor de corte artificial para los registros detalle. Su único propósito es:
+// Marcar cuándo ya no hay más datos en un archivo detalle, para que buscarMinimo lo ignore en las siguientes iteraciones.
 
 // leer (vectorD[i], vectorR[i]);
 procedure leer (var archD: archivoDetalle; var regD: registroDetalle);
@@ -78,28 +80,30 @@ var
     vectorR: vectorRegistros; // Contiene el mínimo de cada archivo detalle
     actualizado: boolean;
 begin
-    reset (archM)
+    reset (archM);
     for i := 1 to dF do begin
         reset (vectorD[i]);
-        leer (vectorD[i], vectorR[i];)
+        leer (vectorD[i], vectorR[i]);
     end;
 
     buscarMinimo (vectorD, vectorR, regD); // Se toma el primer mínimo
     while (not EOF (archM)) do begin // La condición de corte principal es el final del archivo maestro
         read (archM, regM);
-        actualizado := false;
-        while (regD.codigo <> valorAlto) do begin // La segunda condición de corte es el valor de cortr del vector de registros
-            while (regM.codigo = regD.codigo) do begin
-                regM.cantTotalKilos := regM.cantTotalKilos + regD.cantKilos;
-                actualizado := true;
-                buscarMinimo (vectorD, vectorR, regD);
-            end;
+        actualizado := false; // La segunda condición de corte es el valor de cortr del vector de registros
+
+        // En un momento los 16 registros del vectorRegistros van a quedar con el valorAlto,
+        // lo cual indica que ya no queda nada por actualizar, por lo que este while no se va a cumplir más
+        while (regM.codigo = regD.codigo) do begin
+            regM.cantTotalKilos := regM.cantTotalKilos + regD.cantKilos;
+            actualizado := true;
+            buscarMinimo (vectorD, vectorR, regD);
         end;
+
         if (actualizado) then begin // Si se cumple, fue actualizado el registro maestro
             seek (archM, filePos (archM)-1);
             write (archM, regM);
         end;
-        // Si salió del while y fue actualizado, hay que actualizar el archivo maestro
+        // Si no fue actualizado, se deja el registro maestro tal cual está y se avanza al siguiente
         if (regM.cantTotalKilos > 10000) then begin // Una vez actualizada -o no- la información de la provincia, se revisa si cumple las condiciones
             writeln ('La provincia ', regM.nombre, ' con codigo ', regM.codigo, ' supera los 10.000 kilos de yerba consumida');
             writeln ('Promedio de yerba consumida por habitante: ', regM.cantTotalKilos / regM.cantHabitantes :0:2);
