@@ -57,7 +57,7 @@ begin
     if (not EOF(archD)) then
         read (archD, regD)
     else
-        regD.codigoLocalidad  := valorAlto; // asigno un valor de corte
+        regD.codigoLocalidad := valorAlto; // asigno un valor de corte
 end;
 
 
