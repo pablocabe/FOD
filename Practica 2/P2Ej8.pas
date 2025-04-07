@@ -38,8 +38,8 @@ procedure crearArchivosDetalle (var vectorD: vectorDetalles);
 var
     i: subrango;
 begin
-    for i := 1 to dF begin
-        crearArchivoDetalle(vectorDetalles[i]); // se dispone
+    for i := 1 to dF do begin
+        crearArchivoDetalle(vectorD[i]); // se dispone
     end;
 end;
 
