@@ -98,7 +98,7 @@ begin
             actualizado := true;
             buscarMinimo (vectorD, vectorR, regD);
         end;
-
+        // Podría usar un acumulador auxiliar
         if (actualizado) then begin // Si se cumple, fue actualizado el registro maestro
             seek (archM, filePos (archM)-1);
             write (archM, regM);
