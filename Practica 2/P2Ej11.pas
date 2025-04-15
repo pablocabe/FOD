@@ -38,6 +38,7 @@ begin
     close (arch);
 end;
 
+
 procedure crearArchivoMaestro (var archM: archivoMaestro) // Se dispone
 
 

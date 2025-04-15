@@ -25,6 +25,7 @@ begin
         regM.codigoProvincia := valorAlto; // Asigno un valor de corte
 end;
 
+
 procedure informarArchivoMaestro (var archM: archivoMaestro);
 var
     regM: registroMaestro;
