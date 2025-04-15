@@ -82,7 +82,7 @@ begin
                 montoTotalDivision := montoTotalDivision + (regM.cantHoras * v[regM.categoria]);
                 writeln ('El numero de empleado es ', regM.numeroEmpleado, ' . Total de horas: ', 
                 regM.cantHoras, '. Importe a cobrar: ', (regM.cantHoras * v[regM.categoria]:0:2));
-                read (archM, regM); // Se avanza en el archivo maestro
+                leer (archM, regM); // Se avanza en el archivo maestro
             end;
             totalHorasDepartamento := totalHorasDepartamento + totalHorasDivision;
             montoTotalDepartamento := montoTotalDepartamento + montoTotalDivision;
