@@ -92,6 +92,7 @@ begin
                 regM.tiempo_total_de_sesiones_abiertas := regM.tiempo_total_de_sesiones_abiertas + minimo.tiempo_sesion;
                 buscarCodigoMinimo (vectorD, vectorR, minimo);
             end;
+            // seek (archM, filePos(archM)-1); ?
             write (archM, regM);
         end;
     end;
