@@ -17,7 +17,7 @@ type
 procedure crearArchivoMaestro (var archM: archivoMaestro) // Se dispone
 
 
-procedure leer (var M: archivoMaestro; var regM: registroMaestro);
+procedure leer (var archM: archivoMaestro; var regM: registroMaestro);
 begin
     if (not EOF(archM)) then
         read (archM, regM)

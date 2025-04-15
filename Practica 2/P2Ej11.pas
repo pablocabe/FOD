@@ -1,10 +1,13 @@
 program P2Ej11;
 
 const
-    
+    maxCategoria = 15;    
     valorAlto = 9999;
 
 type
+    subrangoCategorias = 1 .. maxCategoria;
+
+    vectorValores = array [subrangoCategorias] of real;
 
     registroEmpleado = record;
         departamento: integer;
@@ -17,22 +20,90 @@ type
     archivoEmpleados = file of registroEmpleado;
 
 
+procedure cargarValoresHoras (var v: vectorValores);
+var
+    arch: Text;
+    categoria: integer;
+    valor: real;
+begin
+    assign (arch, 'valores.txt'); // Nombre del archivo de texto
+    reset (arch);
+
+    while (not EOF (arch)) do begin
+        Readln(arch, categoria, valor);  // Lee una línea: categoría y valor
+        if (categoria >= 1) and (categoria <= maxCategoria) then
+            v[categoria] := valor;
+    end;
+
+    close (arch);
+end;
+
 procedure crearArchivoMaestro (var archM: archivoMaestro) // Se dispone
 
 
-procedure informarArchivoMaestro (var archM: archivoMaestro);
-var
-
+procedure leer (var archM: archivoMaestro; var regM: registroMaestro);
 begin
-    
+    if (not EOF(archM)) then
+        read (archM, regM)
+    else
+        regM.departamento := valorAlto; // Asigno un valor de corte
+end;
+
+
+{
+{Otra forma de recorrer el archivo maestro
+En vez del proceso leer: if (not EOF (archM))
+                            read (archM, regM)
+Y en el while principal en vez de (regM.departamento <> valorAlto) se utilizaría while (not EOF (archM))
+}
+
+procedure informarArchivoMaestro (var archM: archivoMaestro; var v: vectorValores);
+var
+    regM: registroEmpleado;
+    departamentoActual, divisionActual: integer;
+    totalHorasDepartamento, totalHorasDivision: integer;
+    montoTotalDepartamento, montoTotalDivision: real;
+begin
+    reset (archM);
+    leer (archM, regM);
+
+    while (regM.departamento <> valorAlto) do begin
+        departamentoActual := regM.departamento;
+        totalHorasDepartamento := 0;
+        montoTotalDepartamento := 0;
+        writeln ('El departamento actual es: ', departamentoActual);
+        while (departamentoActual = regM.departamento) do begin
+            divisionActual := regM.division;
+            totalHorasDivision := 0;
+            montoTotalDivision := 0;
+            writeln ('La division actual es: ', divisionActual);
+            while (divisionActual = regM.division) do begin
+                totalHorasDivision := totalHorasDivision + regM.cantHoras;
+                montoTotalDivision := montoTotalDivision + (regM.cantHoras * v[regM.categoria]);
+                writeln ('El numero de empleado es ', regM.numeroEmpleado, ' . Total de horas: ', 
+                regM.cantHoras, '. Importe a cobrar: ', (regM.cantHoras * v[regM.categoria]:0:2));
+                read (archM, regM); // Se avanza en el archivo maestro
+            end;
+            totalHorasDepartamento := totalHorasDepartamento + totalHorasDivision;
+            montoTotalDepartamento := montoTotalDepartamento + montoTotalDivision;
+            writeln ('Total de horas en la division: ', totalHorasDivision);
+            writeln ('Monto total en la division: ', montoTotalDivision);
+        end;
+        writeln ('Total de horas en el departamento: ', totalHorasDepartamento);
+        writeln ('Monto total en el departamento: ', montoTotalDepartamento);
+    end;
+
+    close (archM);
 end;
 
 
 var
+    v: vectorValores;
     archM: archivoEmpleados;
 begin
+    cargarValoresHoras (v);
     crearArchivoMaestro (archM) // Se dispone
-    informarArchivoMaestro (archM);
+    informarArchivoMaestro (archM, v);
 end.
 
 {
