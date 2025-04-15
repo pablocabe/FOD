@@ -9,7 +9,7 @@ type
 
     vectorValores = array [subrangoCategorias] of real;
 
-    registroEmpleado = record;
+    registroEmpleado = record
         departamento: integer;
         division: integer;
         numeroEmpleado: integer;
@@ -77,7 +77,7 @@ begin
             totalHorasDivision := 0;
             montoTotalDivision := 0;
             writeln ('La division actual es: ', divisionActual);
-            while (divisionActual = regM.division) do begin
+            while (departamentoActual = regM.departamento) and (divisionActual = regM.division) do begin
                 totalHorasDivision := totalHorasDivision + regM.cantHoras;
                 montoTotalDivision := montoTotalDivision + (regM.cantHoras * v[regM.categoria]);
                 writeln ('El numero de empleado es ', regM.numeroEmpleado, ' . Total de horas: ', 
@@ -102,7 +102,7 @@ var
     archM: archivoEmpleados;
 begin
     cargarValoresHoras (v);
-    crearArchivoMaestro (archM) // Se dispone
+    crearArchivoMaestro (archM); // Se dispone
     informarArchivoMaestro (archM, v);
 end.
 
