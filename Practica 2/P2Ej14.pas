@@ -93,9 +93,9 @@ begin
     leerDetalle (archD1, regD1);
     leerDetalle (archD2, regD2);
     buscarMinimo (archD1, archD2, regD1, regD2, minimo);
+    read (archM, regM);
 
     while (not EOF (archM)) do begin // La condición de corte es el final del archivo maestro
-        read (archM, regM);
         if (minimo.destino <> valorAltoString) then begin // Si quedan vuelos por actualizar entra
             while (regM.destino = minimo.destino) and (regM.fecha = minimo.fecha) and (regM.horarioSalida = minimo.horarioSalida) do begin
                 regM.cantAsientosDisponibles := regM.cantAsientosDisponibles - minimo.cantAsientosComprados;
@@ -106,6 +106,7 @@ begin
         end;
         if (regM.cantAsientosDisponibles < cantEspecificaAsientos) then
             writeln (archivoTexto, regM.destino, ' ', regM.fecha, ' ', regM.horarioSalida);
+        read (archM, regM);
     end;
 
     close (archM);
