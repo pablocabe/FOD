@@ -10,7 +10,7 @@ type
         nombreUsuario: string;
         nombre: string;
         apellido: string;
-        cantMailsEnviados: integer;
+        cantidadMailsEnviados: integer;
     end;
 
     registroDetalle = record
@@ -30,7 +30,16 @@ procedure crearArchivoMaestro (var archM: archivoMaestro) // Se dispone
 procedure crearArchivoDetalle (var archD: archivoDetalle) // Se dispone
 
 
-procedure leer (var archD: archivoDetalle; var regD: registroDetalle);
+procedure leerMaestro (var archM: archivoMaestro; var regM: registroMaestro);
+begin
+    if (not EOF(archM)) then
+        read (archM, regM)
+    else
+        regM.numeroUsuario := valorAlto; // Asigno un valor de corte
+end;
+
+
+procedure leerDetalle (var archD: archivoDetalle; var regD: registroDetalle);
 begin
     if (not EOF(archD)) then
         read (archD, regD)
@@ -46,7 +55,7 @@ var
 begin
     reset (archM);
     reset (archD);
-    leer (archD, regD);
+    leerDetalle (archD, regD);
 
     while (regD.numeroUsuario <> valorAlto) do begin
         read (archM, regM);
@@ -57,7 +66,7 @@ begin
 
         while (regD.numeroUsuario = regM.numeroUsuario) do begin
             regM.cantidadMailEnviados := regM.cantidadMailEnviados + 1;
-            leer (archD, regD);
+            leerDetalle (archD, regD);
         end;
 
         seek (archM, filePos(archM)-1);
@@ -73,22 +82,28 @@ procedure generarArchivoText (var archM: archivoMaestro; var archD: archivoDetal
 var
     archivoText: Text;
     usuarioActual, cantAuxiliar: integer;
+    regM: registroMaestro;
     regD: registroDetalle;
 begin
+    reset (archM);
     reset (archD);
-    assign (arch, 'mails.txt'); // Nombre del archivo de texto
+    assign (archivoText, 'mails.txt'); // Nombre del archivo de texto
     rewrite (archivoText);
-    leer (archM, regM);
+    leerMaestro (archM, regM);
+    leerDetalle (archD, regD);
 
-    while (regM.numeroUsuario <> valorAlto) do begin
+    while (regM.numeroUsuario <> valorAlto) do begin // Mi condición de corte principal es el final del archivo maestro
         cantAuxiliar := 0;
-        while (regD.numeroUsuario = usuarioActual) do begin
+        usuarioActual := regM.numeroUsuario;
+        while (regD.numeroUsuario = usuarioActual) do begin // Cuando llegue al valor de corte no entra más en este while
             cantAuxiliar := cantAuxiliar + 1;
-            leer (archD, regD);
+            leerDetalle (archD, regD);
         end;
-        write (archivoText, usuarioActual, cantAuxiliar);
+        writeln (archivoText, usuarioActual, ' ', cantAuxiliar);
+        leerMaestro (archM, regM);
     end;
 
+    close (archM);
     close (archD);
     close (archivoText);
 end;
@@ -96,6 +111,7 @@ end;
 
 var
     archM: archivoMaestro;
+    archD: archivoDetalle;
 begin
     crearArchivoMaestro (archM); // Se dispone
     crearArchivoMaestro (archD); // Se dispone y representa un día
