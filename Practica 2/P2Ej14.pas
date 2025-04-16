@@ -24,7 +24,6 @@ program P2Ej14;
 
 const
     valorAltoString = 'ZZZ';
-    valorAltoInteger = 9999;
 
 type
     registroMaestro = record
@@ -61,6 +60,22 @@ begin
 end;
 
 
+procedure buscarMinimo(var archD1, archD2: archivoDetalle; var regD1, regD2, minimo: registroDetalle);
+begin
+    if (regD1.destino < regD2.destino) or
+       ((regD1.destino = regD2.destino) and (regD1.fecha < regD2.fecha)) or
+       ((regD1.destino = regD2.destino) and (regD1.fecha = regD2.fecha) and (regD1.horarioSalida <= regD2.horarioSalida)) then
+    begin
+        minimo := regD1;
+        leerDetalle(archD1, regD1);
+    end
+    else begin
+        minimo := regD2;
+        leerDetalle(archD2, regD2);
+    end;
+end;
+
+
 procedure actualizarArchivoMaestro (var archM: archivoMaestro; var archD1: archivoDetalle; var archD2: archivoDetalle);
 var
     regM: registroMaestro;
@@ -79,26 +94,18 @@ begin
     leerDetalle (archD2, regD2);
     buscarMinimo (archD1, archD2, regD1, regD2, minimo);
 
-    while (minimo.destino <> valorAltoString) do begin
+    while (not EOF (archM)) do begin // La condición de corte es el final del archivo maestro
         read (archM, regM);
-        while (regM.destino <> minimo.destino) do begin
-            read (archM, regM);
-            while (regM.destino <> minimo.destino) and (regM.horarioSalida <> minimo.horarioSalida) do begin
-                read (archM, regM);
-                while (regM.destino <> minimo.destino) and (regM.fecha <> minimo.fecha) and (regM.horarioSalida <> minimo.horarioSalida) do begin
-                    read (archM, regM);
-                end;
-                while (regM.destino = minimo.destino) and (regM.fecha = minimo.fecha) and (regM.horarioSalida = minimo.horarioSalida) do begin
-                    regM.asientosDisponibles := regM.asientosDisponibles - regD.asientosComprados;
-                    buscarMinimo (archD1, archD2, regD1, regD2, minimo);
-                end;
-                if (regM.asientosDisponibles < cantEspecificaAsientos) then begin
-                    writeln (archivoTexto, regM.destino, ' ', regM.fecha, ' ', regM.hora);
-                end;
-                seek (archM, filePos(archM)-1);
-                write (archM, regM);
+        if (minimo.destino <> valorAltoString) then begin // Si quedan vuelos por actualizar entra
+            while (regM.destino = minimo.destino) and (regM.fecha = minimo.fecha) and (regM.horarioSalida = minimo.horarioSalida) do begin
+                regM.cantAsientosDisponibles := regM.cantAsientosDisponibles - minimo.cantAsientosComprados;
+                buscarMinimo (archD1, archD2, regD1, regD2, minimo);
             end;
+            seek (archM, filePos(archM)-1);
+            write (archM, regM);
         end;
+        if (regM.cantAsientosDisponibles < cantEspecificaAsientos) then
+            writeln (archivoTexto, regM.destino, ' ', regM.fecha, ' ', regM.horarioSalida);
     end;
 
     close (archM);
