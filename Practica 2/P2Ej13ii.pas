@@ -54,6 +54,7 @@ var
     regD: registroDetalle;
     archivoText: Text;
     usuarioActual, cantAuxiliar: integer;
+    actualizado: boolean;
 begin
     reset (archM);
     reset (archD);
@@ -65,45 +66,19 @@ begin
     while (regM.numeroUsuario <> valorAlto) do begin // Mi condición de corte principal es el final del archivo maestro
         usuarioActual := regM.numeroUsuario;
         cantAuxiliar := 0;
+        actualizado := false;
         while (regD.numeroUsuario = usuarioActual) do begin // Cuando llegue al valor de corte no entra más en este while
             cantAuxiliar := cantAuxiliar + 1;
-            regM.cantidadMailEnviados := regM.cantidadMailEnviados + 1;
+            regM.cantidadMailsEnviados := regM.cantidadMailsEnviados + 1;
+            actualizado := true;
             leerDetalle (archD, regD);
         end;
 
         writeln (archivoText, usuarioActual, ' ', cantAuxiliar);
-        seek (archM, filePos(archM)-1);
-        write (archM, regM);
-        leerMaestro (archM, regM);
-    end;
-
-    close (archM);
-    close (archD);
-end;
-
-
-procedure generarArchivoText (var archM: archivoMaestro; var archD: archivoDetalle);
-var
-    archivoText: Text;
-    usuarioActual, cantAuxiliar: integer;
-    regM: registroMaestro;
-    regD: registroDetalle;
-begin
-    reset (archM);
-    reset (archD);
-    assign (archivoText, 'mails.txt'); // Nombre del archivo de texto
-    rewrite (archivoText);
-    leerMaestro (archM, regM);
-    leerDetalle (archD, regD);
-
-    while (regM.numeroUsuario <> valorAlto) do begin // Mi condición de corte principal es el final del archivo maestro
-        cantAuxiliar := 0;
-        usuarioActual := regM.numeroUsuario;
-        while (regD.numeroUsuario = usuarioActual) do begin // Cuando llegue al valor de corte no entra más en este while
-            cantAuxiliar := cantAuxiliar + 1;
-            leerDetalle (archD, regD);
+        if (actualizado) then begin
+            seek (archM, filePos(archM)-1);
+            write (archM, regM);
         end;
-        writeln (archivoText, usuarioActual, ' ', cantAuxiliar);
         leerMaestro (archM, regM);
     end;
 
@@ -118,7 +93,7 @@ var
     archD: archivoDetalle;
 begin
     crearArchivoMaestro (archM); // Se dispone
-    crearArchivoMaestro (archD); // Se dispone y representa un día
+    crearArchivoDetalle (archD); // Se dispone y representa un día
     actualizarArchivoMaestro (archM, archD);
     generarArchivoText (archM, archD);
 end.

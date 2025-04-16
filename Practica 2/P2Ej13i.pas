@@ -65,7 +65,7 @@ begin
         end;
 
         while (regD.numeroUsuario = regM.numeroUsuario) do begin
-            regM.cantidadMailEnviados := regM.cantidadMailEnviados + 1;
+            regM.cantidadMailsEnviados := regM.cantidadMailsEnviados + 1;
             leerDetalle (archD, regD);
         end;
 
@@ -114,7 +114,7 @@ var
     archD: archivoDetalle;
 begin
     crearArchivoMaestro (archM); // Se dispone
-    crearArchivoMaestro (archD); // Se dispone y representa un día
+    crearArchivoDetalle (archD); // Se dispone y representa un día
     actualizarArchivoMaestro (archM, archD);
     generarArchivoText (archM, archD);
 end.
