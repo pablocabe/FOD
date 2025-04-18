@@ -13,7 +13,7 @@ informar fecha y semanario que tuvo más ventas y la misma información del sema
 menos ventas.
 
 Nota: Todos los archivos están ordenados por fecha y código de semanario. No se realizan
-ventas de semanarios si no hay ejemplares para hacerlo
+ventas de semanarios si no hay ejemplares para hacerlo.
 }
 
 program P2Ej16;
