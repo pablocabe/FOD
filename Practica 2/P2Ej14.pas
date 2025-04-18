@@ -82,6 +82,7 @@ var
     regD1, regD2, minimo: registroDetalle;
     archivoTexto: Text;
     cantEspecificaAsientos: integer;
+    actualizado: boolean;
 begin
     reset (archM);
     reset (archD1);
@@ -97,12 +98,16 @@ begin
 
     while (not EOF (archM)) do begin // La condición de corte es el final del archivo maestro
         if (minimo.destino <> valorAltoString) then begin // Si quedan vuelos por actualizar entra
+            actualizado := false;
             while (regM.destino = minimo.destino) and (regM.fecha = minimo.fecha) and (regM.horarioSalida = minimo.horarioSalida) do begin
                 regM.cantAsientosDisponibles := regM.cantAsientosDisponibles - minimo.cantAsientosComprados;
+                actualizado := true;
                 buscarMinimo (archD1, archD2, regD1, regD2, minimo);
             end;
-            seek (archM, filePos(archM)-1);
-            write (archM, regM);
+            if (actualizado) then begin
+                seek (archM, filePos(archM)-1);
+                write (archM, regM);
+            end;
         end;
         if (regM.cantAsientosDisponibles < cantEspecificaAsientos) then
             writeln (archivoTexto, regM.destino, ' ', regM.fecha, ' ', regM.horarioSalida);
