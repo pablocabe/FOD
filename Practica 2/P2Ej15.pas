@@ -21,4 +21,6 @@ requiera para la actualización solicitada e informe cantidad de localidades sin
 chapa (las localidades pueden o no haber sido actualizadas)
 }
 
+
+
 program P2Ej15;
