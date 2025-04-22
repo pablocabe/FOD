@@ -61,7 +61,7 @@ var
     i: subrango;
 begin
     for i := 1 to dF do begin
-        crearArchivoDetalle(vectorD[i]); // se dispone
+        crearArchivoDetalle(vectorD[i]); // Se dispone
     end;
 end;
 
