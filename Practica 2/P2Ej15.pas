@@ -85,7 +85,16 @@ begin
 end;
 
 
-procedure leer (var archD: archivoDetalle; var regD: registroDetalle);
+procedure leerMaestro (var archM: archivoMaestro; var regM: registroMaestro);
+begin
+    if (not EOF (archD)) then
+        read (archM, regM)
+    else
+        regM.codigoProvincia := valorAlto;
+end;
+
+
+procedure leerDetalle (var archD: archivoDetalle; var regD: registroDetalle);
 begin
     if (not EOF (archD)) then
         read (archD, regD)
@@ -107,7 +116,7 @@ begin
         end;
     end;
     if (minimo.codigoProvincia <> valorAlto) then
-        leer (vectorD[pos], vectorR[pos]);
+        leerDetalle (vectorD[pos], vectorR[pos]);
 end;
 
 
@@ -122,13 +131,13 @@ begin
     reset (archM);
     for i := 1 to dF do begin
         reset (vectorD[i]);
-        leer (vectorD[i], vectorR[i]);
+        leerDetalle (vectorD[i], vectorR[i]);
     end;
     cantLocalidadesSinChapa := 0;
 
-    read (archM, regM);
+    leerMaestro (archM, regM);
     buscarMinimo (vectorD, vectorR, minimo);
-    while (not EOF (archM)) do begin
+    while (archM.codigoProvincia <> valorAlto) do begin
         // La misma combinación de provincia y localidad aparece a lo sumo una única vez en archivos maestro y detalle
         if (minimo.codigoProvincia <> valorAlto) then begin
             if (regM.codigoProvincia = minimo.codigoProvincia) and (regM.codigoLocalidad = minimo.codigoLocalidad) then begin
@@ -146,7 +155,7 @@ begin
         end;
         if (regM.cantViviendasChapa = 0) then 
             cantLocalidadesSinChapa := cantLocalidadesSinChapa + 1;
-        read (archM, regM);
+        leerMaestro (archM, regM);
     end;
 
     writeln ('La cantidad de localidades sin viviendas de chapa es: ', cantLocalidadesSinChapa);
