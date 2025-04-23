@@ -67,7 +67,7 @@ end;
 procedure imprimirAsistente (asistente: registroAsistente);
 begin
     with asistente do begin
-        writeln ('Numero =', numero, ' Apellido =', apellido, ' Nombre =', nombre, ' DNI =', DNI);
+        writeln('Numero = ', numero, ' | Apellido = ', apellido, ' | Nombre = ', nombre, ' | DNI = ', DNI);
     end;
 end;
 
@@ -79,7 +79,7 @@ begin
     reset (archivo);
     while (not EOF (archivo)) do begin
         read (archivo, asistente);
-        if asistente.apellido[1] <> '@' then
+        if (asistente.apellido[1] <> '@') then
             imprimirAsistente (asistente);
     end;
     close (archivo);
@@ -112,6 +112,6 @@ begin
     imprimirArchivo (archivo);
     writeln ('Se realizara la baja logica');
     bajaLogica (archivo);
-    writeln ('Se imprimira el archivo original');
+    writeln ('Se imprimira el archivo modificado');
     imprimirArchivo (archivo);
 end.
