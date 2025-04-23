@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compilar y Ejecutar Pascal",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/c",
+        // El comando va con las comillas dobles correctamente dentro de la cadena.
+        "fpc -Px86_64 \"${file}\" && \"${fileDirname}\\${fileBasenameNoExtension}.exe\""
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

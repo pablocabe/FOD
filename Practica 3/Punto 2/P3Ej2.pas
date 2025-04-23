@@ -79,7 +79,8 @@ begin
     reset (archivo);
     while (not EOF (archivo)) do begin
         read (archivo, asistente);
-        imprimirAsistente (asistente);
+        if asistente.apellido[1] <> '@' then
+            imprimirAsistente (asistente);
     end;
     close (archivo);
 end;
@@ -92,7 +93,7 @@ begin
     reset (archivo);
     while (not EOF (archivo)) do begin
         read (archivo, asistente);
-        if (asistente.DNI < 1000) then begin
+        if (asistente.numero < 1000) then begin
             asistente.apellido := '@' + asistente.apellido;
             seek (archivo, filePos(archivo)-1);
             write (archivo, asistente);
