@@ -46,7 +46,6 @@ begin
 end;
 
 
-
 procedure crearArchivo (var archivo: archivoAsistentes);
 var
     nombreArchivo: string;
@@ -54,18 +53,64 @@ var
 begin
     writeln ('Ingrese el nombre del archivo');
     readln (nombreArchivo);
-    assign (archivoAsistentes, nombreArchivo);
-    rewrite (archivoAsistentes);
+    assign (archivo, nombreArchivo);
+    rewrite (archivo);
     leerAsistente (asistente);
     while (asistente.numero <> -1) do begin
-        write (archivoAsistentes, asistente);
+        write (archivo, asistente);
         leerAsistente (asistente);
     end;
-    close (archivoAsistentes);
+    close (archivo);
 end;
+
+
+procedure imprimirAsistente (asistente: registroAsistente);
+begin
+    with asistente do begin
+        writeln ('Numero =', numero, ' Apellido =', apellido, ' Nombre =', nombre, ' DNI =', DNI);
+    end;
+end;
+
+
+procedure imprimirArchivo (var archivo: archivoAsistentes);
+var
+    asistente: registroAsistente;
+begin
+    reset (archivo);
+    while (not EOF (archivo)) do begin
+        read (archivo, asistente);
+        imprimirAsistente (asistente);
+    end;
+    close (archivo);
+end;
+
+
+procedure bajaLogica (var archivo: archivoAsistentes);
+var
+    asistente: registroAsistente;
+begin
+    reset (archivo);
+    while (not EOF (archivo)) do begin
+        read (archivo, asistente);
+        if (asistente.DNI < 1000) then begin
+            asistente.apellido := '@' + asistente.apellido;
+            seek (archivo, filePos(archivo)-1);
+            write (archivo, asistente);
+        end;
+    end;
+    close (archivo);
+end;
+
 
 var
     archivo: archivoAsistentes;
 begin
+    writeln ('Se creara el archivo');
     crearArchivo (archivo);
+    writeln ('Se imprimira el archivo original');
+    imprimirArchivo (archivo);
+    writeln ('Se realizara la baja logica');
+    bajaLogica (archivo);
+    writeln ('Se imprimira el archivo original');
+    imprimirArchivo (archivo);
 end.
