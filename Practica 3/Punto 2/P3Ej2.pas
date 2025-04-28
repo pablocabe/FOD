@@ -12,12 +12,13 @@ String a su elección. Ejemplo: ‘@Saldaño’.
 program P3Ej2;
 
 type
+    str20 = string[20];
 
     registroAsistente = record
         numero: integer;
-        apellido: string;
-        nombre: string;
-        email: string;
+        apellido: str20;
+        nombre: str20;
+        email: str20;
         telefono: integer;
         DNI: integer;
     end;
