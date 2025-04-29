@@ -15,19 +15,14 @@ Adicionalmente, deberá implementar otro procedimiento que se encargue de
 efectivizar las bajas lógicas que se realizaron sobre el archivo maestro con la
 información de las prendas a la venta.
 
-Para ello se deberá utilizar una estructura
-auxiliar (esto es, un archivo nuevo), en el cual se copien únicamente aquellas prendas
-que no están marcadas como borradas.
+Para ello se deberá utilizar una estructura auxiliar (esto es, un archivo nuevo),
+en el cual se copien únicamente aquellas prendas que no están marcadas como borradas.
 
-Al finalizar este proceso de compactación
-del archivo, se deberá renombrar el archivo nuevo con el nombre del archivo maestro
-original.
+Al finalizar este proceso de compactación del archivo,
+se deberá renombrar el archivo nuevo con el nombre del archivo maestro original.
 }
 
 program P3Ej6;
-
-const
-    valorAlto = 9999;
 
 type
     registroMaestro = record
@@ -63,11 +58,12 @@ begin
     reset (archD);
     while (not EOF (archD)) do begin
         read (archD, regD);
+        seek (archM, 0); // Para nunca saltearme alguna posicion del Maestro
         read (archM, regM);
         while (regM.codigoPrenda <> regD.codigoPrenda) do
             read (archM, regM);
         seek (archM, filePos (archM)-1);
-        regM.stock := regM.stock * -1;
+        regM.stock := regM.stock * -1; // Mismo numero de stock pero negativo
         write (archM, regM);
     end;
     close (archM);
@@ -75,11 +71,31 @@ begin
 end;
 
 
+procedure exportarArchivo (var archM: archivoMaestro; var archAux: archivoMaestro);
 var
-    archM: archivoMaestro;
+    regM: registroMaestro;
+begin
+    reset (archM);
+    assign (archAux, 'ArchivoAuxiliar');
+    rewrite (archAux);
+    while (not EOF (archM)) do begin
+        read (archM, regM);
+        if (regM.stock >= 0) then
+            write (archAux, regM);
+    end;
+    close (archM);
+    close (archAux);
+    erase (archM);
+    rename (archAux, 'ArchivoMaestro');
+end;
+
+
+var
+    archM, archAux: archivoMaestro;
     archD: archivoDetalle;
 begin
     crearArchivoMaestro (archM); // Se dispone
     crearArchivoDetalle (archD); // Se dispone
     actualizarArchivoMaestro (archM, archD);
+    exportarArchivo (archM, archAux);
 end.
