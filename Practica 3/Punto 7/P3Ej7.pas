@@ -20,6 +20,10 @@ archivo (baja física) donde el archivo se trunque una sola vez.
 
 program P3Ej7; // Me falta revisar el b y hacer el i
 
+const
+
+    valorCorte = 9999;
+
 type
 
     registroAve = record
@@ -36,6 +40,15 @@ type
 procedure crearArchivoMaestro (var archM: archivoMaestro); // Se dispone
 
 
+procedure leer (var archM: archivoMaestro; var regM: registroAve);
+begin
+    if (not EOF(a)) then
+        read(archM, regM)
+    else
+        regM.codigo := valorCorte;
+end;
+
+
 procedure bajaLogica (var archM: archivoMaestro; codigoTeclado: integer);
 var
     regM: registroAve;
@@ -45,7 +58,7 @@ begin
     existe := false;
     while (not EOF (archM)) and (not existe) do begin
         read (archM, regM);
-        if (archM.codigo = codigoTeclado) then begin
+        if (regM.codigo = codigoTeclado) then begin
             existe := true;
             seek (archM, filePos(archM)-1);
             regM.codigo := regM.codigo * -1;
@@ -60,48 +73,37 @@ begin
 end;
 
 
-procedure compactarArchivo (var archM: archivoMaestro); // Mas directo?
+procedure compactarArchivo (var archM: archivoMaestro);
 var
-    regM: registroAve;
-    pos: integer;
+    regM, regUltimo: registroAve;
+    posActual, posUltimo: integer;
 begin
     reset (archM);
-    while (not EOF (archM)) do begin
-        read (archM, regM);
+    leer (archM, regM);
+    while (regM.codigo <> valorCorte) do begin
         if (regM.codigo < 0) then begin
-            pos := filePos(archM-1);
-            seek (archM, fileSize(archM-1));
-            read (archM, regM);
-            truncate (archM);
-            seek (archM, pos);
+            posActual := filePos(archM) - 1;
+            seek (archM, fileSize(archM) - 1);
+            read (archM, regUltimo);
+            // Evita copiar el último registro sobre sí mismo o hacer una operación innecesaria si sólo queda un registro en el archivo
+            if (posActual <> fileSize(archM) - 1) then begin
+                while (regM.codigo < 0) do begin
+                    seek (archM, fileSize(archM) - 1);
+                    truncate (archM);
+                    seek (archM, fileSize(archM) - 1);
+                    read (archM, regM);
+                end;
+            end;
+            seek (archM, posActual);
             write (archM, regM);
+            seek (archM, fileSize(archM) - 1);
+            truncate (archM);
+            seek (archM, posActual);
         end;
+        leer (archM, regM);
     end;
     close (archM);
 end;
-
-
-{procedure compactarArchivo (var archM: archivoMaestro);
-var
-    regM: registroAve;
-    pos: integer;
-begin
-    reset (archM);
-    while (not EOF (archM)) do begin
-        read (archM, regM);
-        if (regM.codigo < 0) then begin
-            pos := filePos(archM-1);
-            seek (archM, fileSize(archM-1));
-            read (archM, regM);
-            seek (archM, pos);
-            write (archM, regM);
-            seek (archM, fileSize(archM-1));
-            truncate (archM);
-            seek (archM, pos);
-        end;
-    end;
-    close (archM);
-end;}
 
 
 var
