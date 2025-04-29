@@ -199,7 +199,6 @@ begin
             write (archN, aux);
         end;
     end;
-
     if (existe) then
         writeln ('Eliminada la novela con codigo ', codigoTeclado)
     else
