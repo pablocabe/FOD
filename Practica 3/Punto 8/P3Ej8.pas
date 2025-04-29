@@ -29,3 +29,19 @@ el  módulo  BuscarDistribucion.  En  caso  de  no  existir  se  debe  informar
 }
 
 program P3Ej8;
+
+    registroDistribucion = record
+        nombre: string;
+        anio: integer;
+        version: real;
+        cantDesarrolladores: integer;
+        descripcion: string;        
+    end;
+
+    archivoMaestro = file of registroDistribucion;
+
+var
+
+begin
+    
+end.
