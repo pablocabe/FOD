@@ -28,7 +28,7 @@ el  módulo  BuscarDistribucion.  En  caso  de  no  existir  se  debe  informar
 “Distribución no existente”.
 }
 
-program P3Ej8;
+program P3Ej8; // Revisar a, b y c
 
     registroDistribucion = record
         nombre: string; // El nombre de las distribuciones no puede repetirse
@@ -106,11 +106,9 @@ end;
 procedure altaDistribucion (var archM: archivoMaestro, distribucion: registroDistribucion);
 var
     regM: registroDistribucion;
-    posicion: integer;
 begin
     reset (archM);
-    posicion := buscarDistribucion (archM, distribucion.nombre);
-    if (posicion <> -1) then begin // Se puede agregar
+    if ((buscarDistribucion (archM, distribucion.nombre)) = -1) then begin // Se puede agregar porque no existe
         read (archM, regM); // Se lee el registro cabecera
         if (regM.cantDesarrolladores = 0) then begin // Si no hay espacio disponible segun el registro cabecera
             seek (archM, fileSize (archM));
@@ -130,15 +128,6 @@ begin
     close (archM);
 end;
 
-{
-c.  BajaDistribucion:  módulo  que  recibe  como  parámetro  el  archivo  y  el 
-nombre de una distribución, y se encarga de dar de baja lógicamente la 
-distribución  dada.  Para  marcar una distribución como borrada se debe 
-utilizar el campo cantidad de desarrolladores para mantener actualizada 
-la lista invertida. Para verificar que la distribución a borrar exista debe utilizar 
-el  módulo  BuscarDistribucion.  En  caso  de  no  existir  se  debe  informar 
-“Distribución no existente”.
-}
 
 procedure bajaDistribucion (var archM: archivoMaestro; nombreAux: string);
 var
@@ -148,7 +137,11 @@ begin
     reset (archM);
     posicion := buscarDistribucion (archM, nombreAux);
     if (posicion <> -1) then begin
-        
+        seek (archM, posicion);
+        read (archM, regM);
+        regM.cantDesarrolladores := (filePos (archM)-1) * -1;
+        seek (archM, posicion);
+        write (archM, regM);
     end
     else
         writeln ('Distribucion no existente');
