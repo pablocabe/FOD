@@ -30,15 +30,38 @@ el  módulo  BuscarDistribucion.  En  caso  de  no  existir  se  debe  informar
 
 program P3Ej8; // Revisar a, b y c
 
+type
+    str30 = string[30];
+    str100 = string[100];
+
     registroDistribucion = record
-        nombre: string; // El nombre de las distribuciones no puede repetirse
+        nombre: str30;
         anio: integer;
         version: real;
         cantDesarrolladores: integer;
-        descripcion: string;        
+        descripcion: str100;
     end;
 
     archivoMaestro = file of registroDistribucion;
+
+
+procedure leerDistribucion (var distribucion: registroDistribucion);
+begin
+    with distribucion do begin
+        writeln ('Ingrese el nombre');
+        readln (nombre);
+        if (nombre <> 'fin') then begin
+            writeln ('Ingrese el anio');
+            readln (anio);
+            writeln ('Ingrese la version');
+            readln (version);
+            writeln ('Ingrese la cantidad de desarrolladores');
+            readln (cantDesarrolladores);
+            writeln ('Ingrese la descripcion');
+            readln (descripcion);
+        end;
+    end;
+end;
 
 
 procedure crearArchivoMaestro (var archM: archivoMaestro);
@@ -63,47 +86,26 @@ begin
 end;
 
 
-procedure leerDistribucion (var distribucion: registroDistribucion);
-begin
-    with distribucion do begin
-        writeln ('Ingrese el nombre');
-        readln (nombre);
-        if (nombre <> 'fin') then begin
-            writeln ('Ingrese el anio');
-            readln (anio);
-            writeln ('Ingrese la version');
-            readln (version);
-            writeln ('Ingrese la cantidad de desarrolladores');
-            readln (cantDesarrolladores);
-            writeln ('Ingrese la descripcion');
-            readln (descripcion);
-        end;
-    end;
-end;
-
-
-function buscarDistribucion (var archM: archivoMaestro; nombreAux: string): integer;
+// Reset y close inncesarios, se perderia el puntero del archivo pasado
+function buscarDistribucion (var archM: archivoMaestro; nombreAux: str30): integer;
 var
     regM: registroDistribucion;
     posicion: integer;
-    existe: boolean;
 begin
-    reset (archM);
-    existe := false;
     posicion := -1;
-    while (not EOF (archM)) and (not existe) do begin
-        read (archM, regM);
-        if (regM.nombre = nombreAux) then begin
+    reset(archM);
+    seek(archM, 1);  // Saltar el registro cabecera
+    while (not EOF(archM)) and (posicion = -1) do begin
+        read(archM, regM);
+        if (regM.nombre = nombreAux) then
             posicion := filePos(archM) - 1;
-            existe := true;
-        end;
     end;
+    close(archM);
     buscarDistribucion := posicion;
-    close (archM);
 end;
 
 
-procedure altaDistribucion (var archM: archivoMaestro, distribucion: registroDistribucion);
+procedure altaDistribucion (var archM: archivoMaestro; distribucion: registroDistribucion);
 var
     regM: registroDistribucion;
 begin
@@ -122,36 +124,66 @@ begin
             seek (archM, 0);
             write (archM, regM);
         end;
-    end
-    else // No se puede agregar
-        writeln ('Ya existe la distribucion');
+    end else
+        writeln('Ya existe la distribucion');
+    close(archM);
+end;
+
+
+procedure bajaDistribucion (var archM: archivoMaestro; nombreAux: str30);
+var
+    regM, regCabecera: registroDistribucion;
+    posicion: integer;
+begin
+    reset(archM);
+    posicion := buscarDistribucion(archM, nombreAux);
+    if (posicion <> -1) then begin
+        seek (archM, 0);
+        read (archM, regCabecera); // Lee el registro cabecera
+        seek (archM, posicion);
+        read (archM, regM); // Lee el registro a borrar
+        // Apunto el campo cantDesarrolladores del registro borrado al anterior inicio de la lista
+        regM.cantDesarrolladores := regCabecera.cantDesarrolladores;
+        seek (archM, posicion);
+        write (archM, regM); // Escribo el registro actualizado en su lugar
+        regCabecera.cantDesarrolladores := posicion * -1;
+        seek (archM, 0);
+        write (archM, regCabecera)
+    end else
+        writeln ('Distribucion no existente');
     close (archM);
 end;
 
 
-procedure bajaDistribucion (var archM: archivoMaestro; nombreAux: string);
+procedure imprimirDistribucionesActivas (var archM: archivoMaestro);
 var
     regM: registroDistribucion;
-    posicion: integer;
+    pos: integer;
 begin
     reset (archM);
-    posicion := buscarDistribucion (archM, nombreAux);
-    if (posicion <> -1) then begin
-        seek (archM, posicion);
-        read (archM, regM);
-        regM.cantDesarrolladores := (filePos (archM)-1) * -1;
-        seek (archM, posicion);
-        write (archM, regM);
-    end
-    else
-        writeln ('Distribucion no existente');
+    seek (archM, 1);
+    pos := 1;
+    writeln('Distribuciones activas:');
+    while (not EOF (archM)) do begin
+        read(archM, regM);
+        if (regM.cantDesarrolladores > 0) then begin
+            writeln('--- Posición ', pos, ' ---');
+            writeln('Nombre: ', regM.nombre);
+            writeln('Año: ', regM.anio);
+            writeln('Versión: ', regM.version:0:2);
+            writeln('Desarrolladores: ', regM.cantDesarrolladores);
+            writeln('Descripción: ', regM.descripcion);
+            writeln;
+        end;
+        pos := pos + 1;
+    end;
     close (archM);
 end;
 
 
 var
     archM: archivoMaestro;
-    nombreAux: string;
+    nombreAux: str30;
     distribucion: registroDistribucion;
 begin
     crearArchivoMaestro (archM);
@@ -160,4 +192,5 @@ begin
     writeln ('Ingrese el nombre de una distribucion a eliminar');
     readln (nombreAux);
     bajaDistribucion (archM, nombreAux);
+    imprimirDistribucionesActivas (archM);
 end.
