@@ -101,14 +101,14 @@ var
 begin
     writeln ('Ingrese el nombre del archivo');
     readln (nombreArchivo);
-    assing (archN, nombreArchivo);
+    assingn (archN, nombreArchivo);
     rewrite (archN);
     asignarRegistroCabecera (novela);
     write (archN, novela);
     leerNovela (novela);
     while (novela.nombre <> 'zzz') do begin
         write (archN, novela);
-        leerNovela (archN, novela);
+        leerNovela (novela);
     end;
     close (archN);
 end;
@@ -120,7 +120,7 @@ var
 begin
     writeln ('Ingrese el nombre del archivo');
     readln (nombreArchivo);
-    assing (archN, nombreArchivo);
+    assingn (archN, nombreArchivo);
     reset (archN);
     leerNovela (novela);
     read (archN, aux);
@@ -149,7 +149,7 @@ var
 begin
     writeln ('Ingrese el nombre del archivo');
     readln (nombreArchivo);
-    assing (archN, nombreArchivo);
+    assingn (archN, nombreArchivo);
     reset (archN);
     writeln ('Ingrese los datos de la novela a modificar');
     leerNovela (novela);
@@ -180,7 +180,7 @@ var
 begin
     writeln ('Ingrese el nombre del archivo');
     readln (nombreArchivo);
-    assing (archN, nombreArchivo);
+    assingn (archN, nombreArchivo);
     reset (archN);
     writeln ('Ingrese el codigo de la novela a eliminar');
     readln (codigoTeclado);
@@ -188,7 +188,7 @@ begin
     read (archN, aux);
     // El registro aux toma el registro cabecera
     while (not EOF (archN) and (not existe)) do begin
-        readln (archN, novela);
+        read (archN, novela);
         // El registro novela se utiliza para recorrer el archivo
         if (novela.codigo = codigoTeclado) then begin
             existe := true;
@@ -214,7 +214,7 @@ var
 begin
     writeln ('Ingrese el nombre del archivo binario');
     readln (nombreArchivo);
-    assing (archN, nombreArchivo);
+    assingn (archN, nombreArchivo);
     reset (archN);
     assign (archivoText, 'novelas.txt');
     rewrite(archivoText);

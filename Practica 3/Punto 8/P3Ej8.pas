@@ -28,7 +28,7 @@ el  módulo  BuscarDistribucion.  En  caso  de  no  existir  se  debe  informar
 “Distribución no existente”.
 }
 
-program P3Ej8; // Revisar a, b y c
+program P3Ej8;
 
 type
     str30 = string[30];
