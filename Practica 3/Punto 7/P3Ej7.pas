@@ -72,6 +72,12 @@ begin
     close (archM);
 end;
 
+{
+b. Un procedimiento que compacte el archivo, quitando definitivamente las
+especies de aves marcadas como borradas. Para quitar los registros se deberá
+copiar el último registro del archivo en la posición del registro a borrar y luego
+eliminar del archivo el último registro de forma tal de evitar registros duplicados.
+}
 
 procedure compactarArchivo (var archM: archivoMaestro);
 var
@@ -81,7 +87,7 @@ begin
     reset (archM);
     leer (archM, regM);
     while (regM.codigo <> valorCorte) do begin
-        if (regM.codigo < 0) then begin
+        if (regM.codigo < 0) then begin // Si se cumple, se debe borrar este registro
             posActual := filePos(archM) - 1;
             seek (archM, fileSize(archM) - 1);
             read (archM, regUltimo);
