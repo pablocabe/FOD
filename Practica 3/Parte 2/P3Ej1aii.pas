@@ -10,10 +10,11 @@ cantidad de unidades vendidas. Resuelve los siguientes puntos:
 a. Se pide realizar un procedimiento que actualice el archivo maestro con el
 archivo detalle, teniendo en cuenta que:
 
-i. Los archivos no están ordenados por ningún criterio.
+ii. Cada registro del maestro puede ser actualizado por 0, 1 ó más registros
+del archivo detalle.
 }
 
-program P3Ej1ai;
+program P3Ej1aii;
 
 type
 
