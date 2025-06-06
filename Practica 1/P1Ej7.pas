@@ -23,7 +23,7 @@ begin
     assign (archNovelas, nombreArchivo);
     rewrite (archNovelas);
     assign (archTexto, 'novelas.txt');
-    reset (archTexto);
+    rewrite (archTexto);
     while (not EOF(archTexto)) do begin
         readln (archTexto, n.codigo, n.precio, n.genero);
         readln (archTexto, n.nombre);
