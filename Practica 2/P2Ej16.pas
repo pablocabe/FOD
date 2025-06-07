@@ -144,7 +144,6 @@ begin
 
             seek (archM, filePos(archM)-1);
             write (archM, regM);
-            read (archM, regM);
         end;
 
     end;
