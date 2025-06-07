@@ -82,6 +82,7 @@ var
     i, pos: subrango;
 begin
     minimo.fecha := valorAlto;
+    minimo.codigoSemanario := valorAlto;
     for i := 1 to dF do begin
         if (vectorR[i].fecha < minimo.fecha) or 
         ((vectorR[i].fecha = minimo.fecha) and (vectorR[i].codigoSemanario < minimo.codigoSemanario)) then begin
