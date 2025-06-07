@@ -47,7 +47,7 @@ type
         cantViviendasSinGas: integer;
         cantViviendasChapa: integer;
         cantViviendasSinAgua: integer;
-        cantViviendadSinSanitarios: integer;
+        cantViviendasSinSanitarios: integer;
     end;
 
     registroDetalle = record
@@ -87,7 +87,7 @@ end;
 
 procedure leerMaestro (var archM: archivoMaestro; var regM: registroMaestro);
 begin
-    if (not EOF (archD)) then
+    if (not EOF (archM)) then
         read (archM, regM)
     else
         regM.codigoProvincia := valorAlto;
@@ -137,14 +137,14 @@ begin
 
     leerMaestro (archM, regM);
     buscarMinimo (vectorD, vectorR, minimo);
-    while (archM.codigoProvincia <> valorAlto) do begin
+    while (regM.codigoProvincia <> valorAlto) do begin
         // La misma combinación de provincia y localidad aparece a lo sumo una única vez en archivos maestro y detalle
         if (minimo.codigoProvincia <> valorAlto) then begin
             if (regM.codigoProvincia = minimo.codigoProvincia) and (regM.codigoLocalidad = minimo.codigoLocalidad) then begin
                 regM.cantViviendasSinLuz := regM.cantViviendasSinLuz - minimo.cantViviendasConLuz;
                 regM.cantViviendasSinAgua := regM.cantViviendasSinAgua - minimo.cantViviendasConAgua;
                 regM.cantViviendasSinGas := regM.cantViviendasSinGas - minimo.cantViviendasConGas;
-                regM.cantViviendadSinSanitarios := regM.cantViviendadSinSanitarios - minimo.cantEntregaSanitarios;
+                regM.cantViviendasSinSanitarios := regM.cantViviendasSinSanitarios - minimo.cantEntregaSanitarios;
                 regM.cantViviendasChapa := regM.cantViviendasChapa - minimo.cantViviendasConstruidas;
                 // Solo escribe en el archivo maestro si actualiza los datos
                 seek (archM, filePos(archM)-1);
@@ -153,6 +153,7 @@ begin
                 buscarMinimo (vectorD, vectorR, minimo);
             end;
         end;
+        // Contamos las localidades sin viviendas de chapa, independientemente de si fueron actualizadas o no
         if (regM.cantViviendasChapa = 0) then 
             cantLocalidadesSinChapa := cantLocalidadesSinChapa + 1;
         leerMaestro (archM, regM);
